@@ -1,7 +1,9 @@
-import {APP_VERSION,CANON,ASSUMPTIONS} from './engine.js?v=0.1.3-2';
-import {visibility} from './profile.js?v=0.1.3-2';
-import {normaliseModifiers,modifierKey,signed} from './modifiers.js?v=0.1.3-2';
-import {stats} from './report.js?v=0.1.3-2';
+import {APP_VERSION,CANON,ASSUMPTIONS,STREAMLINED_ASSUMPTIONS,ruleset,breachTarget} from './engine.js?v=0.1.4';
+import {visibility} from './profile.js?v=0.1.4';
+import {normaliseModifiers,modifierKey,signed} from './modifiers.js?v=0.1.4';
+import {stats} from './report.js?v=0.1.4';
+import {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.1.4';
+export {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.1.4';
 
 const completion=runs=>`${runs.filter(x=>x.status==='success').length}/${runs.length} (${runs.length?(100*runs.filter(x=>x.status==='success').length/runs.length).toFixed(1):'—'}%)`;
 export function modifierGroups(runs){
@@ -12,15 +14,19 @@ export function modifierGroups(runs){
     visibility:Object.fromEntries(['fog','full','legacy-full'].map(k=>[k,completion(group.filter(x=>visibility(x)===k))]))}));
 }
 export function report(runs,detailed=false,generated=new Date()){
-  const s=stats(runs),groups=modifierGroups(runs),mixed=groups.length>1;
+  const s=stats(runs),groups=modifierGroups(runs),configurations=configurationGroups(runs),mixed=configurations.length>1;
   const out=[`NOVUM NETWORK INTRUSION — ${detailed?'DETAILED':'SUMMARY'} PLAYTEST DATA`,
     `Exported at: ${generated.toISOString()}`,
-    `App ${APP_VERSION} | Canon ${CANON} | TEST-ONLY assumptions ${ASSUMPTIONS} | Schema 1`,
+    `App ${APP_VERSION} | Canon ${CANON} | TEST-ONLY assumptions ${ASSUMPTIONS} / ${STREAMLINED_ASSUMPTIONS} | Export schema 2`,
     'TEST-ONLY roll modifiers (Cautious / Aggressive):',
-    ...groups.map(g=>`  ${g.key}: ${g.runs} runs, ${g.success} success, completion ${g.rate} · ${g.canonical?'canonical modifiers':'modified playtest'}`),
+    ...groups.map(g=>`  ${g.key}: ${g.runs} runs, ${g.success} success, completion ${g.rate} · ${g.canonical?'zero roll modifiers':'modified playtest'}`),
     `Visibility: fog ${runs.filter(x=>visibility(x)==='fog').length}, full ${runs.filter(x=>visibility(x)==='full').length}, legacy full/unspecified ${runs.filter(x=>visibility(x)==='legacy-full').length} (variant results should be compared separately)`,
-    `Runs ${s.runs} | Outcomes: ${s.success} success, ${runs.filter(x=>x.status==='ejected').length} ejected, ${runs.filter(x=>x.status==='abandoned').length} abandoned | ${mixed?'MIXED MODIFIER CONDITIONS · combined completion':'Completion'} ${s.rate}`,
-    'Per-configuration context:',
+    `Runs ${s.runs} | Outcomes: ${s.success} success, ${runs.filter(x=>x.status==='ejected').length} ejected, ${runs.filter(x=>x.status==='abandoned').length} abandoned | ${mixed?'MIXED PLAYTEST CONDITIONS · combined completion':'Completion'} ${s.rate}`,
+    'Ruleset / target overview:',
+    ...rulesetGroups(runs).map(g=>`  ${g.key}: ${g.runs} runs, completion ${g.rate}`),
+    'Exact playtest configurations (ruleset, objective, modifiers, difficulty, tier, visibility):',
+    ...configurations.map(g=>`  ${g.key}: ${g.rate}; Program checks/run ${g.checksAvg}; ICE confrontations/run ${g.iceAvg}; roll/choice interactions/run ${g.interactionsAvg}; NET/run ${g.netAvg}; Main/run ${g.mainAvg}; charges/run ${g.chargesAvg}; actual Breach/Basic ${g.breachPerBasic} (Cautious ${g.cautiousPerAction}, Aggressive ${g.aggressivePerAction}); ICE movement lost/run ${g.lostIceAvg}; early ejections ${g.earlyEjections}`),
+    'Per-modifier context (all modes combined; compare exact configurations above):',
     ...groups.map(g=>`  ${g.key} | Difficulty ${Object.entries(g.difficulty).map(([k,v])=>`${k} ${v}`).join('; ')} | Network tier ${Object.entries(g.tier).map(([k,v])=>`T${k} ${v}`).join('; ')} | Visibility ${Object.entries(g.visibility).map(([k,v])=>`${k} ${v}`).join('; ')}`),
     `Difficulty (all runs): ${Object.entries(s.byDifficulty).map(([k,v])=>`${k} ${v}`).join('; ')}`,
     `Tier (all runs): ${Object.entries(s.byTier).map(([k,v])=>`T${k} ${v}`).join('; ')}`,
@@ -31,8 +37,8 @@ export function report(runs,detailed=false,generated=new Date()){
     `Programs: ${Object.entries(s.programs).map(([k,v])=>`${k} ${v.uses} uses, ${v.wins}/${v.rolls} successful checks`).join('; ')||'none'}`,
     'TEST-ONLY: objective completion wins before same-action Pursuit catch; detection action advances Pursuit; Fortify sits one segment behind Hacker and blocks one arrival; only earliest crossed node offers a stop, later nodes are passed. Initial connection and rewards are scenario abstractions; enemy Hackers excluded.'
   ];
-  for(const x of runs){const m=normaliseModifiers(x.modifiers);
-    out.push(`RUN ${x.id} ${x.started}→${x.finished||'in progress'} ${x.status} | ${x.network.difficulty} T${x.network.tier} DV${x.network.dv} seed=${x.network.seed} | app=${x.appVersion??'legacy'} visibility=${visibility(x)} | INT${x.hacker.int} Program${x.hacker.program} specialists=${JSON.stringify(x.hacker.programs)} | TEST-ONLY modifiers Cautious ${signed(m.cautious)}, Aggressive ${signed(m.aggressive)}${x.modifiers?'':' (legacy +0/+0)'} | B${x.breach} T${x.trace} P${x.pursuit??'inactive'} charges=${x.charges} Main=${x.main} NET=${x.net} | network=${x.network.elements.map(e=>`${e.type}@${e.pos}:${e.status}`).join(',')}`);
+  for(const x of runs){const m=normaliseModifiers(x.modifiers),metrics=runMetrics(x);
+    out.push(`RUN ${x.id} ${x.started}→${x.finished||'in progress'} ${x.status} | ${x.network.difficulty} T${x.network.tier} DV${x.network.dv} seed=${x.network.seed} | app=${x.appVersion??'legacy'} assumptions=${x.assumptions??ASSUMPTIONS} ruleset=${ruleset(x)} target=${breachTarget(x)} visibility=${visibility(x)} | INT${x.hacker.int} Program${x.hacker.program} specialists=${JSON.stringify(x.hacker.programs)} | TEST-ONLY modifiers Cautious ${signed(m.cautious)}, Aggressive ${signed(m.aggressive)}${x.modifiers?'':' (legacy +0/+0)'} | B${x.breach} T${x.trace} P${x.pursuit??'inactive'} charges=${x.charges} Main=${x.main} NET=${x.net} | checks=${metrics.programSuccesses}/${metrics.programChecks} ICE encounters=${metrics.iceEncounters} confrontations=${metrics.iceConfrontations} W/L/draw=${metrics.iceWins}/${metrics.iceLosses}/${metrics.iceDraws} bypass=${metrics.iceBypasses} interruptions=${metrics.iceInterruptions} lost=${metrics.movementLostToIce} preserved=${metrics.movementPreservedAfterIce} actual Cautious=${metrics.cautiousActual}/${metrics.cautiousActions} Aggressive=${metrics.aggressiveActual}/${metrics.aggressiveActions} nodes=${metrics.nodeAttempts}/${metrics.nodeExtracted}/${metrics.nodeSkipped} | network=${x.network.elements.map(e=>`${e.type}@${e.pos}:${e.status}`).join(',')}`);
     if(detailed)for(const e of x.events){const breakdown=['cautious','aggressive'].includes(e.kind)&&e.die!=null&&e.playtestModifier!==undefined?`d20 ${e.die} + INT ${e.int} + Program ${e.programRank} (base ${e.baseBonus}) + TEST-ONLY ${signed(e.playtestModifier)} = ${e.total} vs DV ${e.dv} ${e.success?'SUCCESS':'FAILURE'}`:`${e.die??''} ${e.total??''}/${e.dv??''} ${e.success??''}`;
       out.push(`  #${e.index} ${e.time} ${e.kind} ${breakdown} ${JSON.stringify(e.before)} -> ${JSON.stringify(e.after)} ${JSON.stringify(Object.fromEntries(Object.entries(e).filter(([k])=>!['index','time','kind','die','total','dv','success','before','after','int','programRank','baseBonus','playtestModifier'].includes(k))))}`)}
   }

@@ -68,7 +68,7 @@ test('modifier-aware summary and detailed reports disclose exact conditions, con
   const b=run();advance(b,'cautious',6);b.status='ejected';b.finished='2026-10-27T00:04:00.000Z';b.visibility='full';delete b.modifiers;b.appVersion='0.1.2';
   const groups=modifierGroups([a,b]);assert.equal(groups.length,2);assert.ok(groups.some(g=>g.key==='+2 / +0'&&g.success===1&&g.visibility.fog.includes('1/1')));
   const timestamp=new Date('2026-10-27T08:25:00Z');let summary=report([a,b],false,timestamp),detail=report([a,b],true,timestamp);
-  assert.match(summary,/Exported at: 2026-10-27T08:25:00.000Z/);assert.match(summary,/MIXED MODIFIER CONDITIONS/);
+  assert.match(summary,/Exported at: 2026-10-27T08:25:00.000Z/);assert.match(summary,/MIXED PLAYTEST CONDITIONS/);
   assert.match(summary,/Cautious \+2, Aggressive \+0/);assert.match(summary,/legacy \+0\/\+0/);
   assert.match(summary,/Difficulty.*Standard/);assert.match(summary,/Network tier T1/);assert.match(summary,/Visibility fog/);
   assert.match(detail,/d20 6 \+ INT 3 \+ Program 3 \(base 6\) \+ TEST-ONLY \+2 = 14 vs DV 14 SUCCESS/);

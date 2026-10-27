@@ -1,6 +1,6 @@
 # Test-only interpretations
 
-This app implements NOVUM Network Intrusion as published in coordinated System Reference revision `2026-10-27-r4`. These choices are **playtest implementation assumptions**, not additions to tabletop canon. The assumption-set identifier in every run and export is `test-1`.
+Canonical mode implements NOVUM Network Intrusion as published in coordinated System Reference revision `2026-10-27-r4`. These choices are **playtest implementation assumptions**, not additions to tabletop canon. Canonical runs retain assumption-set identifier `test-1`. Streamlined runs use `streamlined-test-1`.
 
 - The scenario establishes the initial network connection. The app does not model re-entry, reconnection, an enemy Hacker, or combat elsewhere.
 - When Breach reaches 10 on the same NET Action as a possible Pursuit catch, objective completion wins. Pursuit still advances on the action that first reaches Trace 6, unless Breach 10 has completed.
@@ -11,3 +11,9 @@ This app implements NOVUM Network Intrusion as published in coordinated System R
 - ICE responses draw from a deterministic sequence derived from the network seed and are revealed only after each player choice. Digital d20 rolls use local browser randomness.
 
 Questions about Fortify, simultaneous outcomes, node crossing, reconnection, and specialist ownership remain for Planning. Edit the assumption-set identifier when changing these interpretations, and retain old run metadata for analysis.
+
+## Streamlined Intrusion — experimental, not canon (`streamlined-test-1`)
+
+The v0.1.4 app offers a separate Streamlined ruleset for comparing flow and outcome with Canonical mode. It has no Barriers or Tunnel and may target Breach 8 or 10. A successful Cautious or Aggressive action applies its normal Trace, then resolves crossed positions in order. ICE at a crossed position interrupts the same NET Action: victory or compatible one-charge Bypass resumes the remaining movement; defeat stops at that ICE and loses the rest. Draws immediately replay without extra action or Trace. A new Basic Program check is required to retry active ICE; failure gives no free confrontation. Multiple ICE resolve in position order. Resource Nodes and Sentries keep their existing decisions and consequences within the same movement action. End-of-action Pursuit advances only once; immediate penalties still apply. The existing test-only objective-before-catch precedence remains.
+
+Streamlined Cautious defaults to a TEST-ONLY +2 check modifier; Aggressive defaults +0. Both remain editable independently of Canonical's +0/+0 defaults. Neither alters Breach, Trace, Pursuit, specialist charge costs, natural-roll overrides, or the network-tier DV. Both modes retain three shared specialist charges. The mode, objective and modifiers are recorded at run creation; a later setup change cannot rewrite them. Historical runs without a mode or objective are interpreted as Canonical/Breach 10. Generator placements remain unique and within positions 1 through one less than the selected objective. No claim is made that the experimental rules are approved for NOVUM tabletop canon.

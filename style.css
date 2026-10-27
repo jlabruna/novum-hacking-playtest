@@ -81,3 +81,11 @@ header{height:60px;gap:12px;padding-left:max(16px,env(safe-area-inset-left));pad
 .modifier-results h2{font:600 .75rem Inter,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;margin:0 0 7px}
 .modifier-results p{font-size:.76rem;margin:5px 0;color:var(--muted)}.modifier-results strong{color:var(--ivory)}
 @media(max-width:600px){.terminal{flex-wrap:wrap}.terminal>div{flex-basis:calc(100% - 44px)}.gaming .terminal button.primary{width:100%;margin:3px 0 0}.gaming .terminal{padding:11px!important}}
+
+/* 0.1.4: variable objective and compact ruleset selection */
+.segments{grid-template-columns:repeat(var(--segments,10),minmax(0,1fr))}
+.info-panel .timeline{grid-template-columns:repeat(var(--cells,11),minmax(48px,1fr))}
+label[hidden]{display:none!important}
+#rulesetHelp{margin:0 0 14px;font-size:.8rem}
+.game-meta span:first-child{min-width:0;overflow-wrap:anywhere}
+@media(max-width:600px){.gaming .info-panel .timeline{grid-template-columns:repeat(var(--cells,11),50px)}.game-meta{gap:8px}.game-meta span:first-child{font-size:.66rem}}
