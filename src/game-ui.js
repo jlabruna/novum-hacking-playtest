@@ -33,7 +33,7 @@ export function contextControls(run){
 }
 export function specialistPanel(run){
   if(run.status!=='active'||run.pending)return '';
-  const options=[eligible(run,'trace')&&run.pursuit===null?button('TRACE REMOVAL · 1 CHARGE','trace'):null,eligible(run,'fortify')&&run.breach>1&&run.breach-1>(run.pursuit??-1)?button('FORTIFY · 1 CHARGE','fortify'):null].filter(Boolean);
+  const options=[eligible(run,'trace')&&run.pursuit===null&&run.trace>0?button('TRACE REMOVAL · 1 CHARGE','trace'):null,eligible(run,'fortify')&&run.breach>1&&run.breach-1>(run.pursuit??-1)?button('FORTIFY · 1 CHARGE','fortify'):null].filter(Boolean);
   return options.length?`<section class="panel specialists"><h3>Relevant specialist programs</h3><div class="action-grid">${options.join('')}</div></section>`:'';
 }
 export function eventsPanel(run,tab){

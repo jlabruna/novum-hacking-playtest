@@ -5,7 +5,7 @@ import {newRun,advance,nodePass,extract,ice,check} from '../src/engine.js';
 import {preset,migrateHacker,migrateSettings} from '../src/profile.js';
 import {normaliseModifiers,requireModifiers} from '../src/modifiers.js';
 import {modifierControls} from '../src/modifier-ui.js';
-import {contextControls,statusPanel,gameContent,eventsPanel} from '../src/game-ui.js';
+import {contextControls,statusPanel,gameContent,eventsPanel,specialistPanel} from '../src/game-ui.js';
 import {report} from '../src/report.js';
 import {modifierGroups} from '../src/report-format.js';
 import {SoundEffects,selectCue} from '../src/audio.js';
@@ -31,7 +31,9 @@ test('Cautious and Aggressive apply only their snapshotted check modifier, inclu
   assert.deepEqual(s.modifiers,{cautious:2,aggressive:-2});
   assert.match(contextControls(s),/CAUTIOUS[^<]*TEST-ONLY ROLL \+2/);
   assert.match(contextControls(s),/AGGRESSIVE[^<]*TEST-ONLY ROLL −2/);
+  assert.doesNotMatch(specialistPanel(s),/TRACE REMOVAL/);
   advance(s,'cautious',6);let e=s.events.at(-1);
+  assert.match(specialistPanel(s),/TRACE REMOVAL/);
   assert.deepEqual([e.die,e.int,e.programRank,e.baseBonus,e.playtestModifier,e.total,e.dv,e.success,e.after.breach,e.after.trace],[6,3,3,6,2,14,14,true,2,1]);
   advance(s,'aggressive',9);e=s.events.at(-1);
   assert.deepEqual([e.playtestModifier,e.total,e.success,e.after.breach,e.after.trace],[ -2,13,false,2,4]);
