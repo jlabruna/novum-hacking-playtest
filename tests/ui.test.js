@@ -20,7 +20,7 @@ test('four Hacker presets set approved INT, Program, bonus and all specialist de
 
 test('legacy manual profile and individual overrides survive migration without tier coercion',()=>{
   const old={name:'Old',int:2,program:5,programs:{trace:0,fortify:2,bypass:4,override:1,spoof:3}};
-  assert.deepEqual(migrateHacker(old),{...old,tier:null,custom:true});
+  assert.deepEqual(migrateHacker(old),{...old,tier:null,custom:true,modifiers:{cautious:0,aggressive:0}});
   const custom={...preset(3),custom:true,programs:{...preset(3).programs,spoof:0}};
   assert.deepEqual(migrateHacker(custom),custom);
   assert.equal(migrateSettings({largeText:true}).fog,true);
@@ -41,7 +41,7 @@ test('matched ten-segment tracks show inactive Pursuit, live gap and six Trace p
   const r=newRun(generate('status','Easy',1),preset(1));
   assert.equal(securityGap(r),null);let html=statusPanel(r);
   assert.match(html,/PURSUIT <strong>INACTIVE/);assert.match(html,/SECURITY GAP/);
-  assert.equal((html.match(/class="segments /g)||[]).length,2);
+  assert.equal((html.match(/class="segments /g)||[]).length,3);
   assert.equal((html.match(/<i class=/g)||[]).length,26);
   r.breach=5;r.pursuit=2;r.trace=6;html=statusPanel(r);
   assert.equal(securityGap(r),3);assert.match(html,/3 segments/);assert.match(html,/DETECTED/);
@@ -68,7 +68,7 @@ test('new runs log version and fog mode; old runs remain unspecified in exports'
   const old=structuredClone(r);delete old.visibility;old.appVersion='0.1.1';
   assert.equal(visibility(old),'legacy-full');
   const text=report([r,old]);assert.match(text,/fog 1, full 0, legacy full\/unspecified 1/);
-  assert.match(text,/app=0.1.2 visibility=fog/);assert.match(text,/app=0.1.1 visibility=legacy-full/);
+  assert.match(text,/app=0.1.3 visibility=fog/);assert.match(text,/app=0.1.1 visibility=legacy-full/);
 });
 
 test('mobile status bar, bottom navigation, contextual layout and settings hooks are present',()=>{
@@ -77,6 +77,6 @@ test('mobile status bar, bottom navigation, contextual layout and settings hooks
   assert.match(css,/nav\{position:fixed/);assert.match(css,/safe-area-inset-bottom/);
   assert.match(app,/id="fog"/);assert.match(app,/run.visibility=settings.fog\?'fog':'full'/);
   assert.match(app,/infoTab=a.slice\(4\)/);
-  assert.match(html,/src\/app\.js\?v=0\.1\.2/);assert.match(html,/style\.css\?v=0\.1\.2/);
+  assert.match(html,/src\/app\.js\?v=0\.1\.3/);assert.match(html,/style\.css\?v=0\.1\.3/);
   assert.match(readFileSync('public/sw.js','utf8'),/e\.request\.mode==='navigate'/);
 });

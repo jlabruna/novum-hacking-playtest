@@ -53,3 +53,31 @@ header{height:60px;gap:12px;padding-left:max(16px,env(safe-area-inset-left));pad
 .setup-panel .metric{color:var(--cyan);font-size:.82rem}
 @media(max-width:600px){header{height:54px}main{padding:15px 12px calc(77px + env(safe-area-inset-bottom))}.gaming main{padding-top:7px}.panel{padding:14px}.gaming .panel{padding:9px 10px;margin-bottom:7px}.gaming .info-panel .timeline{grid-template-columns:repeat(11,50px)}.event{grid-template-columns:auto 1fr}.event small{grid-column:2}.gaming .segment{min-height:58px}.gaming .actions{scroll-margin-top:calc(env(safe-area-inset-top) + 64px)}}
 @media(max-width:370px){.gaming .action-grid{grid-template-columns:1fr 1fr}.action-count{font-size:.59rem}.resource-row{font-size:.57rem}}
+
+/* 0.1.3 feedback, result and playtest controls */
+.trace-row{border-top:1px solid var(--line);padding-top:8px;margin-top:9px!important}
+.trace-row .track-label strong{color:var(--danger)!important}
+.segments.trace-track{grid-template-columns:repeat(6,minmax(0,1fr));height:14px}
+.segments.trace-track .filled{background:var(--danger);border-color:var(--danger)}
+.resource-row{margin-top:7px}
+.terminal{display:flex;align-items:center;gap:13px;border-width:1px 1px 1px 3px!important}
+.terminal.success{border-color:var(--success)!important}.terminal.ejected{border-color:var(--danger)!important}
+.terminal.abandoned{border-color:var(--muted)!important}
+.terminal-mark{font:2rem Cormorant,Georgia,serif;line-height:1;color:var(--success)}
+.terminal.ejected .terminal-mark{color:var(--danger)}
+.terminal>div{flex:1;min-width:0}.terminal strong{display:block;font:600 1.1rem Inter,system-ui,sans-serif;letter-spacing:.12em;color:var(--success)}
+.terminal.ejected strong{color:var(--danger)}.terminal.abandoned strong{color:var(--ivory)}
+.terminal p{margin:3px 0!important;color:var(--ivory)}.terminal small{font:.68rem Plex,ui-monospace,monospace;color:var(--muted)}
+.gaming .terminal button.primary{background:var(--burgundy);border-color:var(--gold);min-width:132px}
+.modifier-settings{border-top:1px solid var(--line);padding-top:13px;margin-top:12px}
+.modifier-settings p{margin:5px 0 10px}.modifier-row{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #403c37;padding:6px 0;font-size:.76rem;font-weight:600;letter-spacing:.06em}
+.step-controls{display:flex;align-items:center;gap:5px}.step-controls output{min-width:38px;text-align:center;color:var(--cyan);font:600 .85rem Plex,ui-monospace,monospace}
+.step-controls button{min-width:44px;min-height:44px;text-align:center;padding:5px!important;font-size:1.2rem!important}
+.step-controls button:disabled{opacity:.4;cursor:default}
+.modifier-settings .quiet{margin-top:9px}
+.sound-setting input[type=range]{width:100%;accent-color:var(--gold);min-height:34px;padding:0;background:transparent;border:0}
+.log-clear{margin-top:17px;border-top:1px solid var(--line);padding-top:12px}
+.modifier-results{margin:12px 0 18px;border-top:1px solid var(--line);padding-top:9px}
+.modifier-results h2{font:600 .75rem Inter,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;margin:0 0 7px}
+.modifier-results p{font-size:.76rem;margin:5px 0;color:var(--muted)}.modifier-results strong{color:var(--ivory)}
+@media(max-width:600px){.terminal{flex-wrap:wrap}.terminal>div{flex-basis:calc(100% - 44px)}.gaming .terminal button.primary{width:100%;margin:3px 0 0}.gaming .terminal{padding:11px!important}}

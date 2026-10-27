@@ -8,6 +8,8 @@ Set a Hacker's INT modifier, Program rank and specialist Program tiers. Choose d
 
 Tier 1–4 Hacker presets configure focused INT/Program values and all five specialist tiers; manual changes and existing v0.1.1 profiles remain available and persist locally. Hacker tier and network tier are independent.
 
+Version 0.1.3 adds quiet, optional synthesized feedback, a full-width Trace track and prominent terminal results. Settings stores sound on/off and volume (25% initially). Hacker Setup offers independent −6…+6 **TEST-ONLY** Cautious and Aggressive check modifiers, both defaulting to zero; Tunnel, ICE, extraction and specialist effects remain unchanged. Each run captures its modifiers when it starts. Summary and Detailed reports include an export timestamp, exact modifier groups and per-run configurations; detailed events include the complete check breakdown. The Log has a confirmed **Clear Completed Runs** action that leaves the active intrusion and configuration intact. Mixed-condition completion rates are explicitly labelled.
+
 The included Hacker is an **example configuration**, not an official character. A network's tier sets DV 14/16/18/20, while Easy/Standard/Hard sets component counts independently. Special Programs require a tier at least equal to the network tier and spend the shared three charges. No software-tier check bonus is added.
 
 ## iPhone
@@ -24,6 +26,6 @@ npm run verify
 
 The static site is produced in `dist/`. `.github/workflows/pages.yml` tests and publishes that directory when `main` changes. Set repository **Settings → Pages → Build and deployment → GitHub Actions** once. The site uses relative versioned assets so it runs beneath a repository URL prefix. The service worker precaches the complete shell, fetches navigations fresh when online and falls back offline; each release should update the app version, asset query and cache identifier. Close and reopen after an update. IndexedDB survives a routine update.
 
-Version 0.1.2 adds a compact mobile action surface, matching Breach/Pursuit tracks, tabbed events/map, and iPhone safe-area spacing. Updates preserve IndexedDB history; old sessions are labelled legacy full/unspecified rather than retroactively fog-enabled.
+Version 0.1.2 added a compact mobile action surface, matching Breach/Pursuit tracks, tabbed events/map, and iPhone safe-area spacing. Updates preserve IndexedDB history; old sessions are labelled legacy full/unspecified rather than retroactively fog-enabled. Existing runs without modifier metadata are read as canonical +0/+0. Audio starts only after a user gesture; iPhone output, including silent-switch behavior, needs device testing.
 
 No backend, account, telemetry, cloud sync or licensed Foundry runtime is involved. The icon is a generic concentric motif, not a reproduction of the NOVUM logo. The palette follows the private Visual Identity Guide; local font fallbacks avoid a network dependency.

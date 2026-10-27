@@ -17,7 +17,7 @@ test('offline shell pre-caches every required static asset under a relative Page
   const self={location:{origin:'https://example.test'},addEventListener:(name,fn)=>listeners[name]=fn,skipWaiting:async()=>{},clients:{claim:async()=>{}}};
   vm.runInNewContext(source,{self,caches,fetch:async()=>{throw Error('offline')},URL});
   let install;listeners.install({waitUntil:p=>install=p});await install;
-  for(let path of ['./','./index.html','./style.css','./src/app.js','./src/engine.js','./src/profile.js','./src/view.js','./src/game-ui.js','./src/setup-ui.js','./src/storage.js','./src/report.js','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png'])assert.ok(saved.has(path),path);
+  for(let path of ['./','./index.html','./style.css','./src/app.js','./src/engine.js','./src/profile.js','./src/view.js','./src/game-ui.js','./src/setup-ui.js','./src/storage.js','./src/report.js','./src/audio.js','./src/modifiers.js','./src/modifier-ui.js','./src/report-format.js','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png'])assert.ok(saved.has(path),path);
   let response;listeners.fetch({request:{method:'GET',url:'https://example.test/novum-hacking-playtest/src/engine.js'},respondWith:p=>response=p});assert.equal((await response).body,'cached ./src/engine.js');
 });
 
