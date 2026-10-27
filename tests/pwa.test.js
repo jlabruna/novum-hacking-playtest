@@ -12,7 +12,7 @@ test('IndexedDB retains an active run and detailed history through export/import
 });
 
 test('offline shell pre-caches every required static asset under a relative Pages path',async()=>{
-  const source=readFileSync('public/sw.js','utf8'),listeners={},saved=new Map(),cache={addAll:async urls=>{for(let u of urls){assert.ok(existsSync(u==='./'?'index.html':u.replace(/^\.\//,''))||existsSync(`public/${u.replace(/^\.\//,'')}`),u);saved.set(u,{body:`cached ${u}`})}},put:async(k,v)=>saved.set(k,v)};
+  const source=readFileSync('public/sw.js','utf8'),listeners={},saved=new Map(),cache={addAll:async urls=>{for(let u of urls){assert.ok(existsSync(u==='./'?'index.html':u.replace(/^\.\//,'').split('?')[0])||existsSync(`public/${u.replace(/^\.\//,'').split('?')[0]}`),u);saved.set(u,{body:`cached ${u}`})}},put:async(k,v)=>saved.set(k,v)};
   const caches={open:async()=>cache,keys:async()=>['novum-intrusion-0.1.2'],delete:async()=>true,match:async request=>saved.get(request.url)||saved.get(request.url.replace('https://example.test/novum-hacking-playtest/','./'))};
   const self={location:{origin:'https://example.test'},addEventListener:(name,fn)=>listeners[name]=fn,skipWaiting:async()=>{},clients:{claim:async()=>{}}};
   vm.runInNewContext(source,{self,caches,fetch:async()=>{throw Error('offline')},URL});

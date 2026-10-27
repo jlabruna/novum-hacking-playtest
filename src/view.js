@@ -1,4 +1,4 @@
-import {visibility} from './profile.js';
+import {visibility} from './profile.js?v=0.1.2';
 
 const names={barrier:'BARRIER',ice:'ICE',sentry:'SENTRY',node:'RESOURCE'};
 export function shownElement(element,breach,fog,preview=false){return !fog||preview||element.pos<=breach}

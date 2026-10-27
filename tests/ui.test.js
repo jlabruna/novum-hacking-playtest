@@ -77,4 +77,6 @@ test('mobile status bar, bottom navigation, contextual layout and settings hooks
   assert.match(css,/nav\{position:fixed/);assert.match(css,/safe-area-inset-bottom/);
   assert.match(app,/id="fog"/);assert.match(app,/run.visibility=settings.fog\?'fog':'full'/);
   assert.match(app,/infoTab=a.slice\(4\)/);
+  assert.match(html,/src\/app\.js\?v=0\.1\.2/);assert.match(html,/style\.css\?v=0\.1\.2/);
+  assert.match(readFileSync('public/sw.js','utf8'),/e\.request\.mode==='navigate'/);
 });

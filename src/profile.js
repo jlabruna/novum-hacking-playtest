@@ -1,4 +1,4 @@
-import {PROGRAMS} from './engine.js';
+import {PROGRAMS} from './engine.js?v=0.1.2';
 
 export const PRESETS={1:{int:3,program:3},2:{int:4,program:4},3:{int:5,program:5},4:{int:5,program:6}};
 export function preset(tier,name='Example Hacker'){

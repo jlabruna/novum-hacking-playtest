@@ -1,5 +1,5 @@
-import {APP_VERSION,CANON,ASSUMPTIONS} from './engine.js';
-import {visibility} from './profile.js';
+import {APP_VERSION,CANON,ASSUMPTIONS} from './engine.js?v=0.1.2';
+import {visibility} from './profile.js?v=0.1.2';
 const avg=a=>a.length?(a.reduce((x,y)=>x+y,0)/a.length).toFixed(2):'—';
 const med=a=>{if(!a.length)return '—';let b=[...a].sort((x,y)=>x-y);return ((b[Math.floor((b.length-1)/2)]+b[Math.floor(b.length/2)])/2).toFixed(2)};
 const rate=a=>a.length?`${a.filter(x=>x.status==='success').length}/${a.length} (${(100*a.filter(x=>x.status==='success').length/a.length).toFixed(1)}%)`:'0/0 (—)';

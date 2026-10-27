@@ -1,8 +1,8 @@
-import {APP_VERSION,CANON,ASSUMPTIONS,PROGRAMS,generate,newRun,rollIce,advance,nodePass,sentryChoice,ice,extract,skipNode,useSpecial,eligible,abandon} from './engine.js';
-import {get,put,backup,restore} from './storage.js';
-import {preset,migrateHacker,migrateSettings} from './profile.js';
-import {setupContent} from './setup-ui.js';
-import {timeline,gameContent,eventsPanel} from './game-ui.js';import {stats,report} from './report.js';
+import {APP_VERSION,CANON,ASSUMPTIONS,PROGRAMS,generate,newRun,rollIce,advance,nodePass,sentryChoice,ice,extract,skipNode,useSpecial,eligible,abandon} from './engine.js?v=0.1.2';
+import {get,put,backup,restore} from './storage.js?v=0.1.2';
+import {preset,migrateHacker,migrateSettings} from './profile.js?v=0.1.2';
+import {setupContent} from './setup-ui.js?v=0.1.2';
+import {timeline,gameContent,eventsPanel} from './game-ui.js?v=0.1.2';import {stats,report} from './report.js?v=0.1.2';
 let page='menu',run=null,runs=[],hacker=preset(1),settings=migrateSettings(null),infoTab='events',draft={difficulty:'Standard',tier:1,seed:''},notice='',filters={difficulty:'All',tier:'All',outcome:'All',name:''},reportMode='summary';const root=document.getElementById('app');const E=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btn=(label,action,cls='')=>`<button class="${cls}" data-action="${action}">${label}</button>`;
 function shell(title,content){document.body.classList.toggle('gaming',page==='game'||page==='result');root.innerHTML=`<header><button class="wordmark" data-action="menu" aria-label="Main menu">NOVUM</button><span class="edition">NETWORK INTRUSION<br><small>HACKING PLAYTEST · ${APP_VERSION}</small></span></header><main><div class="heading"><p class="eyebrow">FIELD SYSTEM / ${CANON}</p><h1>${title}</h1></div>${content}</main><nav>${btn('Menu','menu')}${btn('New','new')}${btn('Setup','setup')}${btn('Log','log')}${btn('About','about')}</nav>${notice?`<div class="toast" role="status">${E(notice)}</div>`:''}`;document.body.classList.toggle('large',!!settings.largeText)}

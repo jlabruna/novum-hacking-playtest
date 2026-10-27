@@ -1,5 +1,5 @@
-import {PROGRAMS} from './engine.js';
-import {PRESETS} from './profile.js';
+import {PROGRAMS} from './engine.js?v=0.1.2';
+import {PRESETS} from './profile.js?v=0.1.2';
 
 const E=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function setupContent(hacker){

@@ -22,7 +22,7 @@ Requires Node 24, with no external runtime or build dependencies.
 npm run verify
 ```
 
-The static site is produced in `dist/`. `.github/workflows/pages.yml` tests and publishes that directory when `main` changes. Set repository **Settings → Pages → Build and deployment → GitHub Actions** once. The site uses relative paths so it runs beneath a repository URL prefix. The service worker precaches the complete shell; each release should update the app version and cache identifier, and users should close/reopen after the cache refresh. IndexedDB survives a routine update.
+The static site is produced in `dist/`. `.github/workflows/pages.yml` tests and publishes that directory when `main` changes. Set repository **Settings → Pages → Build and deployment → GitHub Actions** once. The site uses relative versioned assets so it runs beneath a repository URL prefix. The service worker precaches the complete shell, fetches navigations fresh when online and falls back offline; each release should update the app version, asset query and cache identifier. Close and reopen after an update. IndexedDB survives a routine update.
 
 Version 0.1.2 adds a compact mobile action surface, matching Breach/Pursuit tracks, tabbed events/map, and iPhone safe-area spacing. Updates preserve IndexedDB history; old sessions are labelled legacy full/unspecified rather than retroactively fog-enabled.
 
