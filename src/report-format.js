@@ -1,7 +1,7 @@
-import {APP_VERSION,CANON,ASSUMPTIONS} from './engine.js?v=0.1.3';
-import {visibility} from './profile.js?v=0.1.3';
-import {normaliseModifiers,modifierKey,signed} from './modifiers.js?v=0.1.3';
-import {stats} from './report.js?v=0.1.3';
+import {APP_VERSION,CANON,ASSUMPTIONS} from './engine.js?v=0.1.3-2';
+import {visibility} from './profile.js?v=0.1.3-2';
+import {normaliseModifiers,modifierKey,signed} from './modifiers.js?v=0.1.3-2';
+import {stats} from './report.js?v=0.1.3-2';
 
 const completion=runs=>`${runs.filter(x=>x.status==='success').length}/${runs.length} (${runs.length?(100*runs.filter(x=>x.status==='success').length/runs.length).toFixed(1):'—'}%)`;
 export function modifierGroups(runs){

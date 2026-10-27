@@ -1,4 +1,4 @@
-import {normaliseModifiers,signed} from './modifiers.js?v=0.1.3';
+import {normaliseModifiers,signed} from './modifiers.js?v=0.1.3-2';
 
 export function modifierControls(value){
   const m=normaliseModifiers(value);

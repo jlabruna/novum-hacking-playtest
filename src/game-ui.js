@@ -1,6 +1,6 @@
-import {eligible} from './engine.js?v=0.1.3';
-import {mapCells,track,securityGap,gameVisibility} from './view.js?v=0.1.3';
-import {normaliseModifiers,signed} from './modifiers.js?v=0.1.3';
+import {eligible} from './engine.js?v=0.1.3-2';
+import {mapCells,track,securityGap,gameVisibility} from './view.js?v=0.1.3-2';
+import {normaliseModifiers,signed} from './modifiers.js?v=0.1.3-2';
 
 const escape=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const button=(label,action,cls='')=>`<button class="${cls}" data-action="${action}">${label}</button>`;
