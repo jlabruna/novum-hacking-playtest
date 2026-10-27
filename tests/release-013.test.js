@@ -29,9 +29,9 @@ test('Cautious and Aggressive apply only their snapshotted check modifier, inclu
   const profile={...hacker(),modifiers:{cautious:2,aggressive:-2}},s=newRun(network(),profile);
   profile.modifiers.cautious=-6;
   assert.deepEqual(s.modifiers,{cautious:2,aggressive:-2});
-  assert.match(contextControls(s),/CAUTIOUS[^<]*TEST-ONLY ROLL \+2/);
-  assert.match(contextControls(s),/AGGRESSIVE[^<]*TEST-ONLY ROLL −2/);
-  assert.doesNotMatch(specialistPanel(s),/TRACE REMOVAL/);
+  assert.match(contextControls(s),/CAUTIOUS<\/b><span>ROLL \+2/);
+  assert.match(contextControls(s),/AGGRESSIVE<\/b><span>ROLL −2/);
+  assert.match(specialistPanel(s),/TRACE REMOVAL[^<]*<small>Not currently applicable/);
   advance(s,'cautious',6);let e=s.events.at(-1);
   assert.match(specialistPanel(s),/TRACE REMOVAL/);
   assert.deepEqual([e.die,e.int,e.programRank,e.baseBonus,e.playtestModifier,e.total,e.dv,e.success,e.after.breach,e.after.trace],[6,3,3,6,2,14,14,true,2,1]);
@@ -56,11 +56,11 @@ test('Tunnel, extraction and ICE do not receive Basic Program test modifiers or 
 });
 
 test('full-width Trace and terminal result are prominent while contextual tabs remain',()=>{
-  const s=run();for(let n=0;n<=6;n++){s.trace=n;const html=statusPanel(s);assert.match(html,new RegExp(`TRACE <strong>${n} / 6`));assert.equal((html.match(/<i class=/g)||[]).length,26);assert.equal((html.match(/class="track-row trace-row"/g)||[]).length,1)}
+  const s=run();for(let n=0;n<=6;n++){s.trace=n;const html=statusPanel(s);assert.match(html,new RegExp(`TRACE <strong>${n} / 6`));assert.equal((html.match(/<i class=/g)||[]).length,6);assert.equal((html.match(/class="track-row trace-row"/g)||[]).length,1)}
   assert.match(statusPanel(s),/DETECTED/);
-  s.status='success';s.breach=10;let html=gameContent(s,'events');assert.match(html,/ACCESS GRANTED/);assert.match(html,/NEW NETWORK/);assert.doesNotMatch(html,/VIEW PLAYTEST LOG/);assert.match(html,/RECENT EVENTS/);
-  s.status='ejected';s.breach=4;html=gameContent(s,'map');assert.match(html,/EJECTED/);assert.match(html,/FINAL BREACH 4 \/ 10/);assert.match(html,/NETWORK MAP/);
-  assert.match(eventsPanel(s,'events'),/RECENT EVENTS/);
+  s.status='success';s.breach=10;let html=gameContent(s,'events');assert.match(html,/OBJECTIVE COMPLETE/);assert.match(html,/NEW NETWORK/);assert.doesNotMatch(html,/VIEW PLAYTEST LOG/);assert.match(html,/LATEST EVENTS/);
+  s.status='ejected';s.breach=4;html=gameContent(s,'map');assert.match(html,/EJECTED/);assert.match(html,/FINAL BREACH 4 \/ 10/);assert.match(html,/NETWORK DETAILS/);
+  assert.match(eventsPanel(s,'events'),/LATEST EVENTS/);
 });
 
 test('modifier-aware summary and detailed reports disclose exact conditions, contexts and export time',()=>{
@@ -89,7 +89,7 @@ test('audio cue priority, detection transition, mute and graceful unavailable co
   audio.arm({sound:true});audio.arm({sound:true});assert.equal(created,1);
   audio.play('success',{sound:false,volume:25});assert.equal(started,0);
   audio.play('success',{sound:true,volume:25});assert.equal(started,3);
-  audio.play('button',{sound:true,volume:0});assert.equal(started,4);assert.ok(stopped>=7);
+  audio.play('button',{sound:true,volume:0});assert.equal(started,3);assert.ok(stopped>=3);
 });
 
 test('targeted clear preserves active run, config and new backup fields, including older backups',async()=>{

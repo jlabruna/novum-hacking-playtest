@@ -1,9 +1,9 @@
-import {APP_VERSION,CANON,ASSUMPTIONS,STREAMLINED_ASSUMPTIONS,ruleset,breachTarget} from './engine.js?v=0.1.4';
-import {visibility} from './profile.js?v=0.1.4';
-import {normaliseModifiers,modifierKey,signed} from './modifiers.js?v=0.1.4';
-import {stats} from './report.js?v=0.1.4';
-import {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.1.4';
-export {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.1.4';
+import {APP_VERSION,CANON,ASSUMPTIONS,STREAMLINED_ASSUMPTIONS,ruleset,breachTarget} from './engine.js?v=0.1.5';
+import {visibility} from './profile.js?v=0.1.5';
+import {normaliseModifiers,modifierKey,signed} from './modifiers.js?v=0.1.5';
+import {stats} from './report.js?v=0.1.5';
+import {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.1.5';
+export {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.1.5';
 
 const completion=runs=>`${runs.filter(x=>x.status==='success').length}/${runs.length} (${runs.length?(100*runs.filter(x=>x.status==='success').length/runs.length).toFixed(1):'—'}%)`;
 export function modifierGroups(runs){
@@ -17,15 +17,16 @@ export function report(runs,detailed=false,generated=new Date()){
   const s=stats(runs),groups=modifierGroups(runs),configurations=configurationGroups(runs),mixed=configurations.length>1;
   const out=[`NOVUM NETWORK INTRUSION — ${detailed?'DETAILED':'SUMMARY'} PLAYTEST DATA`,
     `Exported at: ${generated.toISOString()}`,
-    `App ${APP_VERSION} | Canon ${CANON} | TEST-ONLY assumptions ${ASSUMPTIONS} / ${STREAMLINED_ASSUMPTIONS} | Export schema 2`,
+    `App ${APP_VERSION} | Canon ${CANON} | TEST-ONLY assumptions ${ASSUMPTIONS} / ${STREAMLINED_ASSUMPTIONS} | Export schema 3`,
     'TEST-ONLY roll modifiers (Cautious / Aggressive):',
+    'Streamlined v0.1.5 uses streamlined-test-2: Trace 8, Facility Alert 0-3, 3 Memory, optional nodes and one-use Sentries. Historical streamlined-test-1 runs are distinct.',
     ...groups.map(g=>`  ${g.key}: ${g.runs} runs, ${g.success} success, completion ${g.rate} · ${g.canonical?'zero roll modifiers':'modified playtest'}`),
     `Visibility: fog ${runs.filter(x=>visibility(x)==='fog').length}, full ${runs.filter(x=>visibility(x)==='full').length}, legacy full/unspecified ${runs.filter(x=>visibility(x)==='legacy-full').length} (variant results should be compared separately)`,
     `Runs ${s.runs} | Outcomes: ${s.success} success, ${runs.filter(x=>x.status==='ejected').length} ejected, ${runs.filter(x=>x.status==='abandoned').length} abandoned | ${mixed?'MIXED PLAYTEST CONDITIONS · combined completion':'Completion'} ${s.rate}`,
     'Ruleset / target overview:',
     ...rulesetGroups(runs).map(g=>`  ${g.key}: ${g.runs} runs, completion ${g.rate}`),
     'Exact playtest configurations (ruleset, objective, modifiers, difficulty, tier, visibility):',
-    ...configurations.map(g=>`  ${g.key}: ${g.rate}; Program checks/run ${g.checksAvg}; ICE confrontations/run ${g.iceAvg}; roll/choice interactions/run ${g.interactionsAvg}; NET/run ${g.netAvg}; Main/run ${g.mainAvg}; charges/run ${g.chargesAvg}; actual Breach/Basic ${g.breachPerBasic} (Cautious ${g.cautiousPerAction}, Aggressive ${g.aggressivePerAction}); ICE movement lost/run ${g.lostIceAvg}; early ejections ${g.earlyEjections}`),
+    ...configurations.map(g=>`  ${g.key}: ${g.rate}; Program checks/run ${g.checksAvg}; ICE confrontations/run ${g.iceAvg}; interactions/run ${g.interactionsAvg}; NET/run ${g.netAvg}; Main/run ${g.mainAvg}; Memory/charges used ${g.memoryAvg}; detected ${g.detected}; nodes extracted/run ${g.nodesAvg}; Sentries triggered/run ${g.sentriesAvg}; actual Breach/Basic ${g.breachPerBasic} (Cautious ${g.cautiousPerAction}, Aggressive ${g.aggressivePerAction}); ICE movement lost/run ${g.lostIceAvg}; Sentry movement lost/run ${g.lostSentryAvg}; early ejections ${g.earlyEjections}`),
     'Per-modifier context (all modes combined; compare exact configurations above):',
     ...groups.map(g=>`  ${g.key} | Difficulty ${Object.entries(g.difficulty).map(([k,v])=>`${k} ${v}`).join('; ')} | Network tier ${Object.entries(g.tier).map(([k,v])=>`T${k} ${v}`).join('; ')} | Visibility ${Object.entries(g.visibility).map(([k,v])=>`${k} ${v}`).join('; ')}`),
     `Difficulty (all runs): ${Object.entries(s.byDifficulty).map(([k,v])=>`${k} ${v}`).join('; ')}`,
@@ -35,10 +36,10 @@ export function report(runs,detailed=false,generated=new Date()){
     `Charges spent avg ${s.chargesAvg}; Program checks ${s.checks.success}/${s.checks.total}; ICE W/L/draw ${s.ice.wins}/${s.ice.losses}/${s.ice.draws}; Sentries encountered ${s.sentries}`,
     `NET actions: Barrier ${s.actions.barrier}; ICE ${s.actions.ice}; Reward ${s.actions.reward}. Specialist charge spending: ${Object.entries(s.charges).map(([k,v])=>`${k} ${v}`).join(', ')}`,
     `Programs: ${Object.entries(s.programs).map(([k,v])=>`${k} ${v.uses} uses, ${v.wins}/${v.rolls} successful checks`).join('; ')||'none'}`,
-    'TEST-ONLY: objective completion wins before same-action Pursuit catch; detection action advances Pursuit; Fortify sits one segment behind Hacker and blocks one arrival; only earliest crossed node offers a stop, later nodes are passed. Initial connection and rewards are scenario abstractions; enemy Hackers excluded.'
+    'TEST-ONLY: objective completion wins before same-action Pursuit catch; detection action advances Pursuit; Fortify sits one segment behind Hacker and blocks one arrival; only earliest crossed node offers a stop in historical modes; v0.1.5 Streamlined offers each node in order without truncating movement. Initial connection and rewards are scenario abstractions; enemy Hackers excluded.'
   ];
   for(const x of runs){const m=normaliseModifiers(x.modifiers),metrics=runMetrics(x);
-    out.push(`RUN ${x.id} ${x.started}→${x.finished||'in progress'} ${x.status} | ${x.network.difficulty} T${x.network.tier} DV${x.network.dv} seed=${x.network.seed} | app=${x.appVersion??'legacy'} assumptions=${x.assumptions??ASSUMPTIONS} ruleset=${ruleset(x)} target=${breachTarget(x)} visibility=${visibility(x)} | INT${x.hacker.int} Program${x.hacker.program} specialists=${JSON.stringify(x.hacker.programs)} | TEST-ONLY modifiers Cautious ${signed(m.cautious)}, Aggressive ${signed(m.aggressive)}${x.modifiers?'':' (legacy +0/+0)'} | B${x.breach} T${x.trace} P${x.pursuit??'inactive'} charges=${x.charges} Main=${x.main} NET=${x.net} | checks=${metrics.programSuccesses}/${metrics.programChecks} ICE encounters=${metrics.iceEncounters} confrontations=${metrics.iceConfrontations} W/L/draw=${metrics.iceWins}/${metrics.iceLosses}/${metrics.iceDraws} bypass=${metrics.iceBypasses} interruptions=${metrics.iceInterruptions} lost=${metrics.movementLostToIce} preserved=${metrics.movementPreservedAfterIce} actual Cautious=${metrics.cautiousActual}/${metrics.cautiousActions} Aggressive=${metrics.aggressiveActual}/${metrics.aggressiveActions} nodes=${metrics.nodeAttempts}/${metrics.nodeExtracted}/${metrics.nodeSkipped} | network=${x.network.elements.map(e=>`${e.type}@${e.pos}:${e.status}`).join(',')}`);
+    out.push(`RUN ${x.id} ${x.started}→${x.finished||'in progress'} ${x.status} | ${x.network.difficulty} T${x.network.tier} DV${x.network.dv} seed=${x.network.seed} | app=${x.appVersion??'legacy'} assumptions=${x.assumptions??ASSUMPTIONS} ruleset=${ruleset(x)} target=${breachTarget(x)} Alert=${x.alert??'legacy 0'} startingTrace=${x.startingTrace??0} traceLimit=${x.assumptions===STREAMLINED_ASSUMPTIONS?8:6} visibility=${visibility(x)} | INT${x.hacker.int} Program${x.hacker.program} specialists=${JSON.stringify(x.hacker.programs)} | TEST-ONLY modifiers Cautious ${signed(m.cautious)}, Aggressive ${signed(m.aggressive)}${x.modifiers?'':' (legacy +0/+0)'} | B${x.breach} T${x.trace} P${x.pursuit??'inactive'} Memory/charges=${x.charges} spent=${3-x.charges} Main=${x.main} NET=${x.net} | checks=${metrics.programSuccesses}/${metrics.programChecks} ICE encounters=${metrics.iceEncounters} confrontations=${metrics.iceConfrontations} W/L/draw=${metrics.iceWins}/${metrics.iceLosses}/${metrics.iceDraws} bypass=${metrics.iceBypasses} interruptions=${metrics.iceInterruptions} lost=${metrics.movementLostToIce} preserved=${metrics.movementPreservedAfterIce} actual Cautious=${metrics.cautiousActual}/${metrics.cautiousActions} Aggressive=${metrics.aggressiveActual}/${metrics.aggressiveActions} nodes encountered/attempted/extracted/failed/skipped=${metrics.nodesEncountered}/${metrics.nodeAttempts}/${metrics.nodeExtracted}/${metrics.nodesFailed}/${metrics.nodeSkipped} sentries triggered/spoofed=${metrics.sentriesTriggered}/${metrics.sentriesSpoofed} Sentry movement lost=${metrics.movementLostToSentries} detected=${metrics.detected} | network=${x.network.elements.map(e=>`${e.type}@${e.pos}:${e.status}`).join(',')}`);
     if(detailed)for(const e of x.events){const breakdown=['cautious','aggressive'].includes(e.kind)&&e.die!=null&&e.playtestModifier!==undefined?`d20 ${e.die} + INT ${e.int} + Program ${e.programRank} (base ${e.baseBonus}) + TEST-ONLY ${signed(e.playtestModifier)} = ${e.total} vs DV ${e.dv} ${e.success?'SUCCESS':'FAILURE'}`:`${e.die??''} ${e.total??''}/${e.dv??''} ${e.success??''}`;
       out.push(`  #${e.index} ${e.time} ${e.kind} ${breakdown} ${JSON.stringify(e.before)} -> ${JSON.stringify(e.after)} ${JSON.stringify(Object.fromEntries(Object.entries(e).filter(([k])=>!['index','time','kind','die','total','dv','success','before','after','int','programRank','baseBonus','playtestModifier'].includes(k))))}`)}
   }

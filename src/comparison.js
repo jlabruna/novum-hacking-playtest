@@ -1,6 +1,6 @@
-import {ruleset,breachTarget} from './engine.js?v=0.1.4';
-import {visibility} from './profile.js?v=0.1.4';
-import {modifierKey} from './modifiers.js?v=0.1.4';
+import {ruleset,breachTarget} from './engine.js?v=0.1.5';
+import {visibility} from './profile.js?v=0.1.5';
+import {modifierKey} from './modifiers.js?v=0.1.5';
 
 const avg=values=>values.length?(values.reduce((n,x)=>n+x,0)/values.length).toFixed(2):'—';
 const rate=runs=>runs.length?`${runs.filter(x=>x.status==='success').length}/${runs.length} (${(100*runs.filter(x=>x.status==='success').length/runs.length).toFixed(1)}%)`:'0/0 (—)';
@@ -18,6 +18,12 @@ export function runMetrics(run){
     iceInterruptions:basic.filter(e=>e.interruptedByIce).length,
     movementLostToIce:basic.reduce((n,e)=>n+(e.lostToIce||0),0),
     movementPreservedAfterIce:basic.reduce((n,e)=>n+(e.preservedAfterIce||0),0),
+    movementLostToSentries:basic.reduce((n,e)=>n+(e.lostToSentry||0),0),
+    sentriesTriggered:basic.reduce((n,e)=>n+(e.sentriesTriggered||0),0)+events.filter(e=>e.sentry&&!e.spoof&&!e.sentriesTriggered).length,
+    sentriesSpoofed:basic.reduce((n,e)=>n+(e.sentriesSpoofed||0),0)+events.filter(e=>e.sentry&&e.spoof&&!e.sentriesSpoofed).length,
+    nodesEncountered:basic.reduce((n,e)=>n+(e.nodesEncountered?.length||0),0),
+    nodesFailed:run.network.elements.filter(e=>e.type==='node'&&e.status==='failed').length,
+    detected:run.pursuit!==null,startingAlert:run.alert??0,startingTrace:run.startingTrace??0,
     cautiousActions:basic.filter(e=>e.kind==='cautious').length,cautiousActual:basic.filter(e=>e.kind==='cautious').reduce((n,e)=>n+(e.actual||0),0),
     aggressiveActions:basic.filter(e=>e.kind==='aggressive').length,aggressiveActual:basic.filter(e=>e.kind==='aggressive').reduce((n,e)=>n+(e.actual||0),0),
     netActions:run.net,mainActions:run.main,chargesUsed:3-run.charges,
@@ -29,7 +35,7 @@ export function runMetrics(run){
 export function configurationGroups(runs){
   const map=new Map();
   for(const run of runs){const mode=ruleset(run),target=breachTarget(run),modifiers=modifierKey(run),difficulty=run.network.difficulty,tier=run.network.tier,fog=visibility(run);
-    const key=`${mode} · Breach ${target} · Cautious/Aggressive ${modifiers} · ${difficulty} T${tier} · ${fog}`;
+    const key=`${mode} [${run.assumptions??'legacy'}] / Alert ${run.alert??'legacy 0'} / Breach ${target} / Cautious/Aggressive ${modifiers} / ${difficulty} T${tier} / ${fog}`;
     if(!map.has(key))map.set(key,[]);map.get(key).push(run)}
   return [...map].sort(([a],[b])=>a.localeCompare(b)).map(([key,group])=>{
     const m=group.map(runMetrics),sum=k=>m.reduce((n,x)=>n+x[k],0),basic=sum('cautiousActions')+sum('aggressiveActions');
@@ -40,7 +46,7 @@ export function configurationGroups(runs){
       breachPerBasic:basic?((sum('cautiousActual')+sum('aggressiveActual'))/basic).toFixed(2):'—',
       cautiousPerAction:sum('cautiousActions')?(sum('cautiousActual')/sum('cautiousActions')).toFixed(2):'—',
       aggressivePerAction:sum('aggressiveActions')?(sum('aggressiveActual')/sum('aggressiveActions')).toFixed(2):'—',
-      lostIceAvg:avg(m.map(x=>x.movementLostToIce)),earlyEjections:sum('earlyEjection')};
+      lostIceAvg:avg(m.map(x=>x.movementLostToIce)),lostSentryAvg:avg(m.map(x=>x.movementLostToSentries)),memoryAvg:avg(m.map(x=>x.chargesUsed)),detected:sum('detected'),nodesAvg:avg(m.map(x=>x.nodeExtracted)),sentriesAvg:avg(m.map(x=>x.sentriesTriggered)),earlyEjections:sum('earlyEjection')};
   });
 }
-export function rulesetGroups(runs){const keys=new Map();for(const run of runs){const key=`${ruleset(run)} · Breach ${breachTarget(run)}`;if(!keys.has(key))keys.set(key,[]);keys.get(key).push(run)}return [...keys].map(([key,group])=>({key,runs:group.length,rate:rate(group)}))}
+export function rulesetGroups(runs){const keys=new Map();for(const run of runs){const key=`${ruleset(run)} [${run.assumptions??'legacy'}] / Alert ${run.alert??'legacy 0'} / Breach ${breachTarget(run)}`;if(!keys.has(key))keys.set(key,[]);keys.get(key).push(run)}return [...keys].map(([key,group])=>({key,runs:group.length,rate:rate(group)}))}

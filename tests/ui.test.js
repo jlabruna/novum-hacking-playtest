@@ -23,7 +23,7 @@ test('legacy manual profile and individual overrides survive migration without t
   assert.deepEqual(migrateHacker(old),{...old,tier:null,custom:true,modifiers:{cautious:0,aggressive:0},streamlinedModifiers:{cautious:2,aggressive:0}});
   const custom={...preset(3),custom:true,programs:{...preset(3).programs,spoof:0}};
   assert.deepEqual(migrateHacker(custom),custom);
-  assert.equal(migrateSettings({largeText:true}).fog,true);
+  assert.equal(migrateSettings({largeText:true}).fog,false);
   assert.equal(migrateSettings({largeText:false,fog:false}).fog,false);
 });
 
@@ -40,11 +40,11 @@ test('complete preview and optional fog conceal future contents, reveal reached 
 test('matched ten-segment tracks show inactive Pursuit, live gap and six Trace positions',()=>{
   const r=newRun(generate('status','Easy',1),preset(1));
   assert.equal(securityGap(r),null);let html=statusPanel(r);
-  assert.match(html,/PURSUIT <strong>INACTIVE/);assert.match(html,/SECURITY GAP/);
-  assert.equal((html.match(/class="segments /g)||[]).length,3);
-  assert.equal((html.match(/<i class=/g)||[]).length,26);
+  assert.match(html,/PURSUIT <b>INACTIVE/);assert.match(html,/GAP <b>—/);
+  assert.equal((html.match(/class="segments /g)||[]).length,1);
+  assert.equal((html.match(/<i class=/g)||[]).length,6);
   r.breach=5;r.pursuit=2;r.trace=6;html=statusPanel(r);
-  assert.equal(securityGap(r),3);assert.match(html,/3 segments/);assert.match(html,/DETECTED/);
+  assert.equal(securityGap(r),3);assert.match(html,/GAP <b>3/);assert.match(html,/DETECTED/);
 });
 
 test('contextual options remain encounter-specific and tabs do not mutate run',()=>{
@@ -52,7 +52,7 @@ test('contextual options remain encounter-specific and tabs do not mutate run',(
   assert.match(contextControls(r),/CAUTIOUS/);assert.match(contextControls(r),/AGGRESSIVE/);
   assert.doesNotMatch(contextControls(r),/TUNNEL|ATTACK|EXTRACT/);
   const snapshot=structuredClone(r);
-  assert.match(eventsPanel(r,'events'),/RECENT EVENTS/);assert.match(eventsPanel(r,'map'),/NETWORK MAP/);
+  assert.match(eventsPanel(r,'events'),/LATEST EVENTS/);assert.match(eventsPanel(r,'map'),/NETWORK DETAILS/);
   assert.deepEqual(r,snapshot);
   const barrier=r.network.elements.find(e=>e.type==='barrier');r.breach=barrier.pos;
   assert.match(contextControls(r),/TUNNEL/);assert.doesNotMatch(contextControls(r),/CAUTIOUS/);
@@ -68,15 +68,15 @@ test('new runs log version and fog mode; old runs remain unspecified in exports'
   const old=structuredClone(r);delete old.visibility;old.appVersion='0.1.1';
   assert.equal(visibility(old),'legacy-full');
   const text=report([r,old]);assert.match(text,/fog 1, full 0, legacy full\/unspecified 1/);
-  assert.match(text,/app=0.1.4 assumptions=test-1 ruleset=canonical target=10 visibility=fog/);assert.match(text,/app=0.1.1 assumptions=test-1 ruleset=canonical target=10 visibility=legacy-full/);
+  assert.match(text,/app=0.1.5 assumptions=test-1 ruleset=canonical target=10 Alert=legacy 0 startingTrace=0 traceLimit=6 visibility=fog/);assert.match(text,/app=0.1.1 assumptions=test-1 ruleset=canonical target=10 Alert=legacy 0 startingTrace=0 traceLimit=6 visibility=legacy-full/);
 });
 
 test('mobile status bar, bottom navigation, contextual layout and settings hooks are present',()=>{
   const css=readFileSync('style.css','utf8'),html=readFileSync('index.html','utf8'),app=readFileSync('src/app.js','utf8');
   assert.match(html,/viewport-fit=cover/);assert.match(css,/body\{padding-top:env\(safe-area-inset-top\)/);
   assert.match(css,/nav\{position:fixed/);assert.match(css,/safe-area-inset-bottom/);
-  assert.match(app,/id="fog"/);assert.match(app,/run.visibility=settings.fog\?'fog':'full'/);
+  assert.match(app,/id="fog"/);assert.match(app,/run.visibility=modernStreamlined\(run\)\?'full':settings.fog\?'fog':'full'/);
   assert.match(app,/infoTab=a.slice\(4\)/);
-  assert.match(html,/src\/app\.js\?v=0\.1\.4/);assert.match(html,/style\.css\?v=0\.1\.4/);
+  assert.match(html,/src\/app\.js\?v=0\.1\.5/);assert.match(html,/style\.css\?v=0\.1\.5/);
   assert.match(readFileSync('public/sw.js','utf8'),/e\.request\.mode==='navigate'/);
 });

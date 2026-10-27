@@ -6,7 +6,7 @@ import {mapCells} from '../src/view.js';
 import {contextControls,statusPanel,gameContent,timeline} from '../src/game-ui.js';
 import {configurationGroups,runMetrics,report} from '../src/report.js';
 const hacker=()=>preset(1,'Test');
-const network=(items=[],target=10)=>({seed:'stream-test',difficulty:'Hard',tier:1,dv:14,ruleset:'streamlined',target,elements:items.map(([type,pos],i)=>({id:`${type}-${i}`,type,pos,status:'active'}))});
+const network=(items=[],target=10)=>({seed:'stream-test',difficulty:'Hard',tier:1,dv:14,ruleset:'streamlined',assumptions:'streamlined-test-1',target,elements:items.map(([type,pos],i)=>({id:`${type}-${i}`,type,pos,status:'active'}))});
 const run=(items=[],target=10)=>newRun(network(items,target),hacker());
 const element=(s,type,pos)=>s.network.elements.find(e=>e.type===type&&e.pos===pos);
 
@@ -38,7 +38,7 @@ test('Streamlined defaults, adjustable modifiers, no Tunnel and natural override
 test('ICE win preserves full Aggressive movement and records one NET action',()=>{
   const s=run([['ice',3]]);s.breach=2;advance(s,'aggressive',10);
   assert.deepEqual([s.breach,s.net,s.trace,s.pending.type,s.pending.intended],[3,1,2,'streamIce',5]);
-  assert.match(contextControls(s),/ICE during movement/);assert.match(contextControls(s),/ICE BYPASS/);
+  assert.match(contextControls(s),/ICE ENCOUNTER/);assert.match(contextControls(s),/ICE BYPASS/);
   ice(s,'Attack','Exploit');assert.deepEqual([s.breach,s.net,s.trace,s.pending,s.status],[5,1,2,null,'active']);
   assert.equal(element(s,'ice',3).status,'cleared');assert.deepEqual([s.events[0].actual,s.events[0].iceEncounters,s.events[0].iceWins,s.events[0].preservedAfterIce],[3,1,1,2]);
   assert.deepEqual([runMetrics(s).programChecks,runMetrics(s).iceConfrontations],[1,1]);
@@ -58,7 +58,7 @@ test('draws, bypass, tier incompatibility and charge accounting',()=>{
   assert.doesNotMatch(contextControls(s),/ICE BYPASS/);ice(s,'Attack','Exploit');assert.equal(s.breach,5);assert.equal(runMetrics(s).iceDraws,1);assert.equal(runMetrics(s).iceConfrontations,2);
   const b=run([['ice',3]]);b.breach=2;advance(b,'aggressive',10);ice(b,null,null,true);
   assert.deepEqual([b.breach,b.charges,b.net,b.trace,runMetrics(b).iceBypasses,runMetrics(b).iceConfrontations],[5,2,1,2,1,0]);
-  const t=run([['ice',3]]);t.network.tier=2;t.network.dv=16;t.breach=2;advance(t,'aggressive',20);assert.equal(eligible(t,'bypass'),false);assert.match(contextControls(t),/Bypass unavailable/);
+  const t=run([['ice',3]]);t.network.tier=2;t.network.dv=16;t.breach=2;advance(t,'aggressive',20);assert.equal(eligible(t,'bypass'),false);assert.match(contextControls(t),/Program tier too low/);
   assert.throws(()=>ice(t,null,null,true),/unavailable/i);assert.equal(t.charges,3);
 });
 
@@ -81,10 +81,10 @@ test('Sentries resolve once around ICE; detection, pursued ICE loss and objectiv
 });
 
 test('Breach 8 changes internal completion, bars, map and reports; mixed history stays separate',()=>{
-  const s=run([],8);s.breach=6;advance(s,'cautious',20);assert.equal(s.status,'success');assert.equal(s.breach,8);assert.match(statusPanel(s),/BREACH <strong>8 \/ 8/);assert.match(gameContent(s,'map'),/BREACH 8 \/ 8/);
+  const s=run([],8);s.breach=6;advance(s,'cautious',20);assert.equal(s.status,'success');assert.equal(s.breach,8);assert.match(statusPanel(s),/BREACH<\/small><strong>8<em> \/ 8/);assert.match(gameContent(s,'map'),/BREACH 8 \/ 8/);
   assert.equal(mapCells(s.network,0).length,9);assert.equal(mapCells(s.network,0).at(-1).objective,true);assert.match(timeline(s.network,0),/OBJECTIVE/);
   const ten=run([],10);ten.breach=6;advance(ten,'cautious',20);assert.equal(ten.status,'active');
   const historical=newRun(generate('old','Easy',1),hacker());delete historical.ruleset;delete historical.target;delete historical.modifiers;historical.appVersion='0.1.3';
-  const groups=configurationGroups([s,ten,historical]);assert.equal(groups.length,3);assert.ok(groups.some(g=>g.key.includes('streamlined · Breach 8')));assert.ok(groups.some(g=>g.key.includes('canonical · Breach 10')));
+  const groups=configurationGroups([s,ten,historical]);assert.equal(groups.length,3);assert.ok(groups.some(g=>g.key.includes('streamlined [streamlined-test-1]')&&g.key.includes('Breach 8')));assert.ok(groups.some(g=>g.key.includes('canonical [test-1]')&&g.key.includes('Breach 10')));
   const text=report([s,ten,historical],true,new Date('2026-10-27T08:25:00Z'));assert.match(text,/ruleset=streamlined target=8/);assert.match(text,/ruleset=canonical target=10/);assert.match(text,/MIXED PLAYTEST CONDITIONS/);assert.match(text,/Exported at: 2026-10-27T08:25:00.000Z/);
 });

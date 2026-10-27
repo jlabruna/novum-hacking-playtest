@@ -1,5 +1,5 @@
-import {PROGRAMS} from './engine.js?v=0.1.4';
-import {normaliseModifiers} from './modifiers.js?v=0.1.4';
+import {PROGRAMS} from './engine.js?v=0.1.5';
+import {normaliseModifiers} from './modifiers.js?v=0.1.5';
 
 export const PRESETS={1:{int:3,program:3},2:{int:4,program:4},3:{int:5,program:5},4:{int:5,program:6}};
 export function preset(tier,name='Example Hacker'){
@@ -15,5 +15,5 @@ export function migrateHacker(saved){
     tier:PRESETS[saved.tier]?Number(saved.tier):null,custom:saved.custom??true,modifiers:normaliseModifiers(saved.modifiers),
     streamlinedModifiers:saved.streamlinedModifiers?normaliseModifiers(saved.streamlinedModifiers):{cautious:2,aggressive:0}};
 }
-export function migrateSettings(saved){return {largeText:!!saved?.largeText,fog:saved?.fog??true,sound:saved?.sound??true,volume:saved?.volume!=null&&Number.isFinite(Number(saved.volume))?Math.max(0,Math.min(100,Number(saved.volume))):25}}
+export function migrateSettings(saved){return {largeText:!!saved?.largeText,fog:saved?.fog??false,sound:saved?.sound??true,volume:saved?.volume!=null&&Number.isFinite(Number(saved.volume))?Math.max(0,Math.min(100,Number(saved.volume))):25,defaultAlert:Number.isInteger(saved?.defaultAlert)&&saved.defaultAlert>=0&&saved.defaultAlert<=3?saved.defaultAlert:0}}
 export function visibility(run){return run.visibility??'legacy-full'}
