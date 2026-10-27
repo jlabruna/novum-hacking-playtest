@@ -2,6 +2,10 @@
 
 A standalone, local-first tabletop playtest PWA. Canonical mode implements the linear Breach 0–10 intrusion, security elements, Program checks, ICE, Trace/Pursuit, specialist charges, and optional Resource Nodes from NOVUM canon revision `2026-10-27-r4`. It is separate from NOVUM's private canon and Foundry repositories. The test-only interpretations are in [ASSUMPTIONS.md](ASSUMPTIONS.md).
 
+## v0.1.6 tactical audio
+
+Thirteen original, locally synthesized interface cues replace the old sine-note patterns. Button, Program success/failure, objective completion, ejection and detection follow the six Planning-approved sound recipes; ICE, Sentry, Memory, resources and Pursuit use matching original cues. One event plays per action, with terminal outcomes and detection taking precedence. Settings retains sound on/off and volume 0-100%; the Web Audio context starts after user interaction, and sound errors never interrupt play. [AUDIO.md](AUDIO.md) describes the sound set and playback checks. No rules, visual layout or playtest storage schema changed.
+
 ## v0.1.5 tactical console
 
 The whole app uses a dark tactical console with a two-row Breach track on iPhone. The Hacker, encounters and Pursuit frontier share the track. Trace remains a full-width segmented bar. The visual style extends to menus, setup, preview, results and logs. Audio feedback is louder; Settings still controls volume and mute.

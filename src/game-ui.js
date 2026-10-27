@@ -1,7 +1,7 @@
-import {eligible,ruleset,breachTarget,modernStreamlined,traceLimit} from './engine.js?v=0.1.5';
-import {mapCells,track,securityGap,gameVisibility} from './view.js?v=0.1.5';
-import {normaliseModifiers,signed} from './modifiers.js?v=0.1.5';
-import {runMetrics} from './comparison.js?v=0.1.5';
+import {eligible,ruleset,breachTarget,modernStreamlined,traceLimit} from './engine.js?v=0.1.6';
+import {mapCells,track,securityGap,gameVisibility} from './view.js?v=0.1.6';
+import {normaliseModifiers,signed} from './modifiers.js?v=0.1.6';
+import {runMetrics} from './comparison.js?v=0.1.6';
 
 const E=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btn=(label,action,cls='')=>`<button class="${cls}" data-action="${action}">${label}</button>`;

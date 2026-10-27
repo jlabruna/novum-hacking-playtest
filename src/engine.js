@@ -1,5 +1,5 @@
-import {normaliseModifiers} from './modifiers.js?v=0.1.5';
-export const APP_VERSION='0.1.5', CANON='2026-10-27-r4', ASSUMPTIONS='test-1', STREAMLINED_ASSUMPTIONS='streamlined-test-2', LEGACY_STREAMLINED_ASSUMPTIONS='streamlined-test-1';
+import {normaliseModifiers} from './modifiers.js?v=0.1.6';
+export const APP_VERSION='0.1.6', CANON='2026-10-27-r4', ASSUMPTIONS='test-1', STREAMLINED_ASSUMPTIONS='streamlined-test-2', LEGACY_STREAMLINED_ASSUMPTIONS='streamlined-test-1';
 export const COUNTS={Easy:{barrier:1,ice:0,sentry:0,node:1},Standard:{barrier:2,ice:1,sentry:1,node:2},Hard:{barrier:2,ice:2,sentry:1,node:3}};
 export const STREAMLINED_COUNTS=Object.fromEntries(Object.entries(COUNTS).map(([k,v])=>[k,{...v,barrier:0}]));
 export const ruleset=run=>run.ruleset??run.network?.ruleset??'canonical';

@@ -1,5 +1,7 @@
 # Test-only interpretations
 
+Audio release v0.1.6 changes sound synthesis and cue selection only. It introduces no new gameplay assumptions; `test-1`, `streamlined-test-1` and `streamlined-test-2` retain their existing meanings, and historical runs are not recalculated.
+
 Canonical mode implements NOVUM Network Intrusion as published in coordinated System Reference revision `2026-10-27-r4`. These choices are **playtest implementation assumptions**, not additions to tabletop canon. Canonical runs retain assumption-set identifier `test-1`. Historical v0.1.4 Streamlined runs retain `streamlined-test-1`. New v0.1.5 Streamlined runs use `streamlined-test-2`.
 
 ## Streamlined v0.1.5 — experimental, not canon (`streamlined-test-2`)

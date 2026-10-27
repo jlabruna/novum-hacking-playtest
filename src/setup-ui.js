@@ -1,6 +1,6 @@
-import {PROGRAMS} from './engine.js?v=0.1.5';
-import {PRESETS} from './profile.js?v=0.1.5';
-import {modifierControls} from './modifier-ui.js?v=0.1.5';
+import {PROGRAMS} from './engine.js?v=0.1.6';
+import {PRESETS} from './profile.js?v=0.1.6';
+import {modifierControls} from './modifier-ui.js?v=0.1.6';
 
 const E=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function setupContent(hacker){

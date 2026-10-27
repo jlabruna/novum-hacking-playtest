@@ -1,5 +1,5 @@
-import {visibility} from './profile.js?v=0.1.5';
-import {breachTarget,modernStreamlined} from './engine.js?v=0.1.5';
+import {visibility} from './profile.js?v=0.1.6';
+import {breachTarget,modernStreamlined} from './engine.js?v=0.1.6';
 
 const names={barrier:'BARRIER',ice:'ICE',sentry:'SENTRY',node:'RESOURCE'};
 export function shownElement(element,breach,fog,preview=false){return !fog||preview||element.pos<=breach}

@@ -1,9 +1,9 @@
-import {APP_VERSION,CANON,ASSUMPTIONS,STREAMLINED_ASSUMPTIONS,ruleset,breachTarget} from './engine.js?v=0.1.5';
-import {visibility} from './profile.js?v=0.1.5';
-import {normaliseModifiers,modifierKey,signed} from './modifiers.js?v=0.1.5';
-import {stats} from './report.js?v=0.1.5';
-import {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.1.5';
-export {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.1.5';
+import {APP_VERSION,CANON,ASSUMPTIONS,STREAMLINED_ASSUMPTIONS,ruleset,breachTarget} from './engine.js?v=0.1.6';
+import {visibility} from './profile.js?v=0.1.6';
+import {normaliseModifiers,modifierKey,signed} from './modifiers.js?v=0.1.6';
+import {stats} from './report.js?v=0.1.6';
+import {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.1.6';
+export {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.1.6';
 
 const completion=runs=>`${runs.filter(x=>x.status==='success').length}/${runs.length} (${runs.length?(100*runs.filter(x=>x.status==='success').length/runs.length).toFixed(1):'—'}%)`;
 export function modifierGroups(runs){

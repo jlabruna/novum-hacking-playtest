@@ -84,12 +84,12 @@ test('audio cue priority, detection transition, mute and graceful unavailable co
   assert.equal(selectCue('aggressive',{status:'active',pursuit:null},{status:'active',pursuit:null,events:[{kind:'aggressive',success:false}]}),'programFailure');
   assert.equal(selectCue('new',null,null),'button');
   assert.doesNotThrow(()=>{const silent=new SoundEffects(null);silent.arm({sound:true});silent.play('success',{sound:true})});
-  let created=0,started=0,stopped=0;class FakeContext{constructor(){created++;this.currentTime=0;this.state='suspended';this.destination={}}resume(){this.state='running';return Promise.resolve()}createOscillator(){return {frequency:{setValueAtTime(){}},connect(){},start(){started++},stop(){stopped++}}}createGain(){return {gain:{setValueAtTime(){},linearRampToValueAtTime(){},exponentialRampToValueAtTime(){}},connect(){}}}}
+  let created=0,started=0,stopped=0;class FakeContext{constructor(){created++;this.currentTime=0;this.state='suspended';this.destination={}}resume(){this.state='running';return Promise.resolve()}createOscillator(){return {frequency:{setValueAtTime(){},exponentialRampToValueAtTime(){}},connect(){},start(){started++},stop(){stopped++}}}createGain(){return {gain:{setValueAtTime(){},linearRampToValueAtTime(){},exponentialRampToValueAtTime(){}},connect(){}}}}
   const audio=new SoundEffects(FakeContext);audio.arm({sound:false});assert.equal(created,0);
   audio.arm({sound:true});audio.arm({sound:true});assert.equal(created,1);
   audio.play('success',{sound:false,volume:25});assert.equal(started,0);
-  audio.play('success',{sound:true,volume:25});assert.equal(started,3);
-  audio.play('button',{sound:true,volume:0});assert.equal(started,3);assert.ok(stopped>=3);
+  audio.play('success',{sound:true,volume:25});assert.equal(started,5);
+  audio.play('button',{sound:true,volume:0});assert.equal(started,5);assert.ok(stopped>=5);
 });
 
 test('targeted clear preserves active run, config and new backup fields, including older backups',async()=>{

@@ -1,4 +1,4 @@
-import {normaliseModifiers,signed} from './modifiers.js?v=0.1.5';
+import {normaliseModifiers,signed} from './modifiers.js?v=0.1.6';
 
 export function modifierControls(value,{prefix='m',title='Playtest roll modifiers',reset='resetModifiers',defaults='+0 / +0'}={}){
   const m=normaliseModifiers(value);
