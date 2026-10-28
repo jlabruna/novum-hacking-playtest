@@ -73,6 +73,6 @@ test('audio context failure does not interrupt play and stored preferences survi
   const sound=new SoundEffects(class {constructor(){throw Error('blocked')}});sound.arm({sound:true});assert.doesNotThrow(()=>sound.play('success',{sound:true,volume:100}));
   assert.equal(migrateSettings({sound:false,volume:74,defaultAlert:3}).volume,74);
   assert.equal(migrateSettings({sound:false,volume:74}).sound,false);
-  assert.match(readFileSync('public/sw.js','utf8'),/novum-intrusion-0\.2\.0/);
+  assert.match(readFileSync('public/sw.js','utf8'),/novum-intrusion-0\.2\.1/);
   assert.match(readFileSync('src/app.js','utf8'),/eventsLength:run\.events\?\.length/);
 });

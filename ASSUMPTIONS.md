@@ -1,14 +1,14 @@
 # Network Intrusion implementation notes
 
-## Current v0.2.0 (`network-canon-1`)
+## Current v0.2.1 (`network-canon-1`)
 
-The current playable PWA implements NOVUM canon revision `2026-10-29-r1`. Network Intrusion is GM-invoked for fortified networks. Breach 10, Trace 8, tier DVs 14/16/18/20, external Facility Alert 0–3 and the Cautious/Aggressive numbers are canonical. Easy/Standard/Hard encounter counts are a GM guide rather than a mandatory tabletop formula. The seeded PWA generator uses ICE 0/1/2, Sentries 0/1/1 and optional nodes 1/2/3, one element per position 1–9. The full arrangement is visible before play.
+The current playable PWA implements NOVUM canon revision `2026-10-29-r2`. Network Intrusion is GM-invoked for fortified networks. Breach 10, Trace 8, tier DVs 14/16/18/20, external Facility Alert 0–3 and the Cautious/Aggressive numbers are canonical. Easy/Standard/Hard encounter counts are a GM guide rather than a mandatory tabletop formula. The seeded PWA generator uses ICE 0/1/2, Sentries 0/1/1 and optional nodes 1/2/3, one element per position 1–9. The full arrangement is visible before play.
 
 The PWA treats a generated run as one terminal. A new run creates a new terminal identity even when its seed reproduces an old layout. Abandonment and Pursuit ejection mark that run's terminal locked for the rest of the mission. No facility-wide terminal inventory exists in the PWA. A player cannot resume a finished run. Backdoor's pending choice is saved before the ejection can be archived; the player can supply the GM's current Alert at the restart. The same terminal identity, objective, tier, difficulty and element positions persist. All ICE and Sentries become available again; collected nodes stay collected, while failed/skipped nodes reopen. A second ejection is final. Real-world rewards and Alert are not simulated.
 
 ICE choices use deterministic seeded responses revealed after the player's choice; d20 rolls use browser randomness. At each crossed position ICE resolves before Resource Node, then Sentry. A draw repeats without an extra NET Action. A Sentry reduces intended Breach movement by one and cannot retrigger after consumption. Extraction adds one NET Action, +1 Trace while undetected or +1 immediate Pursuit after detection, plus the ordinary end-of-action Pursuit step. An extraction can eject the Hacker before remaining Basic movement resumes. The objective wins a same-action Pursuit tie after encounter penalties. Fortify occupies the position immediately behind the Hacker if ahead of Pursuit and prevents one arrival. These details follow the promoted Streamlined procedure; any unusual geometry remains GM adjudication.
 
-Diagnostic Cautious/Aggressive roll modifiers are editable and saved per run. Defaults are the approved +2/+0; nondefault values are test conditions, not tabletop rules. The PWA does not adjudicate ordinary computer use, Wireless Exploit, Logic Bomb, Combat Hacking, physical movement, initial connection, enemy Hackers, reward economy or external Alert changes. The GM handles those at the table.
+Diagnostic Cautious/Aggressive roll modifiers are editable and saved per run. Defaults are the approved +2/+0; nondefault values are test conditions, not tabletop rules. The PWA does not adjudicate ordinary computer use, Device Exploit, Logic Bomb, Combat Hacking, physical movement, initial connection, enemy Hackers, reward economy or external Alert changes. The GM handles those at the table.
 
 ## Historical compatibility
 

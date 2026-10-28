@@ -1,12 +1,12 @@
-import {PRESETS} from './profile.js?v=0.2.0';
-import {modifierControls} from './modifier-ui.js?v=0.2.0';
+import {PRESETS} from './profile.js?v=0.2.1';
+import {modifierControls} from './modifier-ui.js?v=0.2.1';
 
 const E=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-export const FEATS={0:'None',1:'Intrusion Protocol',2:'Wireless Exploit',4:'Expanded Capacity',6:'Security Subversion',8:'Logic Bomb',10:'Backdoor'};
+export const FEATS={0:'None',1:'Intrusion Protocol',2:'Device Exploit',4:'Expanded Capacity',6:'Security Subversion',8:'Logic Bomb',10:'Backdoor'};
 export function featSummary(feat){
   const memory=feat>=4?3:feat>=1?2:0;
   const programs=feat>=1?['Trace Removal','Fortify','Spoof','Override',...(feat>=6?['ICE Bypass']:[])]:[];
-  return `<p class="metric">MEMORY ${memory} · SPECIALIST PROGRAMS ${programs.length?programs.join(', '):'None'}</p><div class="prose"><p>${feat>=2?`Wireless Exploit: ${feat>=4?'Medium':'Close'} range · Open, Lock, Blind${feat>=6?', Disable':''}. One visible eligible device; a live feed grants sight but does not extend range.`:'Wireless Exploit not acquired.'}</p>${feat>=8?'<p>Logic Bomb: physically install at a suitable facility terminal (1 Main); one armed. Trigger on your turn as a Free Action via a connected device within Medium to reset Facility Alert to 0. Tabletop only.</p>':''}${feat>=10?'<p>Backdoor: once per original intrusion, choose an immediate restart if Pursuit would eject you. Collected nodes stay collected; failed/skipped nodes reopen.</p>':''}</div>`;
+  return `<p class="metric">MEMORY ${memory} · SPECIALIST PROGRAMS ${programs.length?programs.join(', '):'None'}</p><div class="prose"><p>${feat>=2?`Device Exploit: ${feat>=4?'Medium':'Close'} range · Open, Lock, Blind${feat>=6?', Disable':''}. One visible eligible device; a live feed grants sight but does not extend range.`:'Device Exploit not acquired.'}</p>${feat>=8?'<p>Logic Bomb: physically install at a suitable facility terminal (1 Main); one armed. Trigger on your turn as a Free Action via a connected device within Medium to reset Facility Alert to 0. Tabletop only.</p>':''}${feat>=10?'<p>Backdoor: once per original intrusion, choose an immediate restart if Pursuit would eject you. Collected nodes stay collected; failed/skipped nodes reopen.</p>':''}</div>`;
 }
 export function setupContent(hacker){
   const feat=Number(hacker.feat??0);

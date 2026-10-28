@@ -1,6 +1,8 @@
 # NOVUM Network Intrusion Playtest
 
-Version **0.2.0** implements the published NOVUM Network Intrusion first-playtest rules, canon revision `2026-10-29-r1`. The standalone PWA is a tabletop play aid, not a facility simulation or Foundry module. The [System Reference](https://github.com/jlabruna/novum-canon/blob/main/docs/system/SYSTEM_REFERENCE.md) governs the rules.
+Version **0.2.1** implements the published NOVUM Network Intrusion first-playtest rules, canon revision `2026-10-29-r2`. The standalone PWA is a tabletop play aid, not a facility simulation or Foundry module. The [System Reference](https://github.com/jlabruna/novum-canon/blob/main/docs/system/SYSTEM_REFERENCE.md) governs the rules.
+
+The 0.2.1 update renames the displayed Level 2 Feat to **Device Exploit**. Saved Hacker progression uses the numeric acquired Feat level, so existing profiles need no migration; historical runs retain their recorded version and canon. Combat Hacking and the proposed universal difficulty ladder are adjudicated outside this intrusion play aid. Network Intrusion checks, encounter difficulty and balance are unchanged.
 
 ## Play
 
@@ -14,13 +16,13 @@ ICE resolves during movement. Resource Node extraction costs an additional NET A
 | --- | ---: | --- | --- |
 | None | 0 | None | Basic intrusion remains available to a Hacker trained in Program. |
 | Intrusion Protocol (minimum 1) | 2 | Trace Removal, Fortify, Spoof, Override | — |
-| Wireless Exploit (minimum 2) | 2 | Same | Close-range Open, Lock, Blind. |
-| Expanded Capacity (minimum 4) | 3 | Same | Wireless Exploit reaches Medium. |
-| Security Subversion (minimum 6) | 3 | Adds ICE Bypass | Wireless Exploit gains Disable. |
+| Device Exploit (minimum 2) | 2 | Same | Close-range Open, Lock, Blind. |
+| Expanded Capacity (minimum 4) | 3 | Same | Device Exploit reaches Medium. |
+| Security Subversion (minimum 6) | 3 | Adds ICE Bypass | Device Exploit gains Disable. |
 | Logic Bomb (minimum 8) | 3 | Same | One physically planted security contingency; Free Action trigger resets Alert to 0. |
 | Backdoor (minimum 10) | 3 | Same | One chosen restart when Pursuit would eject the Hacker. |
 
-Specialist Programs are unlocked by Feats and cost one Memory each. There are no specialist software tiers, purchases or preparation slots. ICE Bypass works at any network tier once acquired. Wireless Exploit is a one-roll, one-device tabletop ability, not a Network Intrusion action; a live feed grants visibility but does not extend the Hacker's own range. Logic Bomb is also adjudicated at the tabletop. The PWA displays these abilities but does not simulate them.
+Specialist Programs are unlocked by Feats and cost one Memory each. There are no specialist software tiers, purchases or preparation slots. ICE Bypass works at any network tier once acquired. Device Exploit is a one-roll, one-device tabletop ability, not a Network Intrusion action; a live feed grants visibility but does not extend the Hacker's own range. Logic Bomb is also adjudicated at the tabletop. The PWA displays these abilities but does not simulate them.
 
 Backdoor pauses at qualifying Pursuit ejection for a player choice. Using it immediately restarts the same terminal and layout, restores feat-derived Memory, resets Breach to 0 and Trace to the GM's current Alert, and deactivates Pursuit. Collected nodes and rewards stay collected and cannot pay twice; failed/skipped nodes reopen. It can be used once per original intrusion. Declining or later ejection locks that terminal for the rest of the mission by default. Voluntary disconnection also locks that terminal. A different terminal is a separate encounter.
 

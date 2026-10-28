@@ -1,6 +1,6 @@
-import {ruleset,breachTarget,memoryCapacity} from './engine.js?v=0.2.0';
-import {visibility} from './profile.js?v=0.2.0';
-import {modifierKey} from './modifiers.js?v=0.2.0';
+import {ruleset,breachTarget,memoryCapacity} from './engine.js?v=0.2.1';
+import {visibility} from './profile.js?v=0.2.1';
+import {modifierKey} from './modifiers.js?v=0.2.1';
 
 const avg=values=>values.length?(values.reduce((n,x)=>n+x,0)/values.length).toFixed(2):'—';
 const rate=runs=>runs.length?`${runs.filter(x=>x.status==='success').length}/${runs.length} (${(100*runs.filter(x=>x.status==='success').length/runs.length).toFixed(1)}%)`:'0/0 (—)';

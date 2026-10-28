@@ -1,9 +1,9 @@
-import {APP_VERSION,CANON,ASSUMPTIONS,STREAMLINED_ASSUMPTIONS,NETWORK_ASSUMPTIONS,ruleset,breachTarget,traceLimit,memoryCapacity,currentRules} from './engine.js?v=0.2.0';
-import {visibility} from './profile.js?v=0.2.0';
-import {normaliseModifiers,modifierKey,signed} from './modifiers.js?v=0.2.0';
-import {stats} from './report.js?v=0.2.0';
-import {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.2.0';
-export {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.2.0';
+import {APP_VERSION,CANON,ASSUMPTIONS,STREAMLINED_ASSUMPTIONS,NETWORK_ASSUMPTIONS,ruleset,breachTarget,traceLimit,memoryCapacity,currentRules} from './engine.js?v=0.2.1';
+import {visibility} from './profile.js?v=0.2.1';
+import {normaliseModifiers,modifierKey,signed} from './modifiers.js?v=0.2.1';
+import {stats} from './report.js?v=0.2.1';
+import {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.2.1';
+export {configurationGroups,rulesetGroups,runMetrics} from './comparison.js?v=0.2.1';
 
 const completion=runs=>`${runs.filter(x=>x.status==='success').length}/${runs.length} (${runs.length?(100*runs.filter(x=>x.status==='success').length/runs.length).toFixed(1):'—'}%)`;
 export function modifierGroups(runs){
@@ -36,7 +36,7 @@ export function report(runs,detailed=false,generated=new Date()){
     `Charges spent avg ${s.chargesAvg}; Program checks ${s.checks.success}/${s.checks.total}; ICE W/L/draw ${s.ice.wins}/${s.ice.losses}/${s.ice.draws}; Sentries encountered ${s.sentries}`,
     `NET actions: Barrier ${s.actions.barrier}; ICE ${s.actions.ice}; Reward ${s.actions.reward}. Specialist charge spending: ${Object.entries(s.charges).map(([k,v])=>`${k} ${v}`).join(', ')}`,
     `Programs: ${Object.entries(s.programs).map(([k,v])=>`${k} ${v.uses} uses, ${v.wins}/${v.rolls} successful checks`).join('; ')||'none'}`,
-    'Objective completion wins before same-action Pursuit catch. Current runs use the published 2026-10-29-r1 procedure; older modes remain historical. Initial connection and rewards are scenario abstractions; enemy Hackers are excluded.'
+    'Objective completion wins before same-action Pursuit catch. Current runs use the published 2026-10-29-r2 procedure; older modes remain historical. Initial connection and rewards are scenario abstractions; enemy Hackers are excluded.'
   ];
   for(const x of runs){const m=normaliseModifiers(x.modifiers),metrics=runMetrics(x);
     out.push(`RUN ${x.id} ${x.started}→${x.finished||'in progress'} ${x.status} | ${x.network.difficulty} T${x.network.tier} DV${x.network.dv} seed=${x.network.seed} | app=${x.appVersion??'legacy'} canon=${x.canon??'historical'} assumptions=${x.assumptions??ASSUMPTIONS} ruleset=${ruleset(x)} target=${breachTarget(x)} Alert=${x.alert??'legacy 0'} startingTrace=${x.startingTrace??0} traceLimit=${traceLimit(x)} visibility=${visibility(x)} | INT${x.hacker.int} Program${x.hacker.program} ${currentRules(x)?`feat=${x.hacker.feat} backdoorUsed=${!!x.backdoorUsed} terminal=${x.terminalId}`:`specialists=${JSON.stringify(x.hacker.programs)}`} | modifiers Cautious ${signed(m.cautious)}, Aggressive ${signed(m.aggressive)}${x.modifiers?'':' (legacy +0/+0)'} | B${x.breach} T${x.trace} P${x.pursuit??'inactive'} Memory/charges=${x.charges} spent=${memoryCapacity(x)-x.charges} Main=${x.main} NET=${x.net} | checks=${metrics.programSuccesses}/${metrics.programChecks} ICE encounters=${metrics.iceEncounters} confrontations=${metrics.iceConfrontations} W/L/draw=${metrics.iceWins}/${metrics.iceLosses}/${metrics.iceDraws} bypass=${metrics.iceBypasses} interruptions=${metrics.iceInterruptions} lost=${metrics.movementLostToIce} preserved=${metrics.movementPreservedAfterIce} actual Cautious=${metrics.cautiousActual}/${metrics.cautiousActions} Aggressive=${metrics.aggressiveActual}/${metrics.aggressiveActions} nodes encountered/attempted/extracted/failed/skipped=${metrics.nodesEncountered}/${metrics.nodeAttempts}/${metrics.nodeExtracted}/${metrics.nodesFailed}/${metrics.nodeSkipped} sentries triggered/spoofed=${metrics.sentriesTriggered}/${metrics.sentriesSpoofed} Sentry movement lost=${metrics.movementLostToSentries} detected=${metrics.detected} | network=${x.network.elements.map(e=>`${e.type}@${e.pos}:${e.status}`).join(',')}`);
