@@ -66,7 +66,7 @@ test('ICE interruptions, bypass, pursuit and basic action timing',()=>{
 test('version and Alert separate comparisons and preserve legacy sessions',()=>{
   const modern=run([],2),legacy=run();legacy.assumptions='streamlined-test-1';legacy.appVersion='0.1.4';legacy.alert=null;legacy.startingTrace=0;
   const groups=configurationGroups([modern,legacy]);assert.equal(groups.length,2);assert.ok(groups.some(g=>g.key.includes('Alert 2')));assert.ok(groups.some(g=>g.key.includes('streamlined-test-1')));
-  const text=report([modern,legacy]);assert.match(text,/Alert=2 startingTrace=2 traceLimit=8/);assert.match(text,/streamlined-test-1/);assert.match(text,/Export schema 3/);
+  const text=report([modern,legacy]);assert.match(text,/Alert=2 startingTrace=2 traceLimit=8/);assert.match(text,/streamlined-test-1/);assert.match(text,/Export schema 4/);
   assert.equal(runMetrics(modern).startingTrace,2);assert.match(gameContent(modern,'events'),/NETWORK \/ BREACH TRACK/);
 });
 test('sound gain is louder but bounded, volume zero silent, active run screen responsive',()=>{

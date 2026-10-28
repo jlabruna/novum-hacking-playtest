@@ -1,52 +1,35 @@
 # NOVUM Network Intrusion Playtest
 
-A standalone, local-first tabletop playtest PWA. Canonical mode implements the linear Breach 0–10 intrusion, security elements, Program checks, ICE, Trace/Pursuit, specialist charges, and optional Resource Nodes from NOVUM canon revision `2026-10-27-r4`. It is separate from NOVUM's private canon and Foundry repositories. The test-only interpretations are in [ASSUMPTIONS.md](ASSUMPTIONS.md).
-
-## v0.1.6 tactical audio
-
-Thirteen original, locally synthesized interface cues replace the old sine-note patterns. Button, Program success/failure, objective completion, ejection and detection follow the six Planning-approved sound recipes; ICE, Sentry, Memory, resources and Pursuit use matching original cues. One event plays per action, with terminal outcomes and detection taking precedence. Settings retains sound on/off and volume 0-100%; the Web Audio context starts after user interaction, and sound errors never interrupt play. [AUDIO.md](AUDIO.md) describes the sound set and playback checks. No rules, visual layout or playtest storage schema changed.
-
-## v0.1.5 tactical console
-
-The whole app uses a dark tactical console with a two-row Breach track on iPhone. The Hacker, encounters and Pursuit frontier share the track. Trace remains a full-width segmented bar. The visual style extends to menus, setup, preview, results and logs. Audio feedback is louder; Settings still controls volume and mute.
-
-**New intrusions default to Streamlined (Experimental — Not Canon).** Its objective defaults to Breach 10; optional Breach 8 is a separate experiment. Facility Alert 0–3 sets starting Trace directly. Detection is at Trace 8, then Pursuit moves along the Breach track. Cautious uses TEST-ONLY +2 to its check, moves 2 on success and adds 2 Trace on success or failure. Aggressive uses +0, moves 3 on success and adds 2 Trace on success or 3 on failure. Both modifiers remain adjustable in Hacker Setup. Three Memory replace specialist charges; each specialist use consumes one Memory that does not recharge during an intrusion.
-
-Streamlined has no Barriers. ICE resolves during successful movement, without another NET Action; victory or compatible ICE Bypass preserves remaining movement. Crossed optional Resource Nodes are offered in order without truncating movement; extraction costs an additional NET Action and adds 1 Trace (or 1 immediate Pursuit after detection), whether it succeeds or fails. Skipped and failed nodes are unavailable. One-use Sentries cost one Breach movement and 1 Trace (or 1 immediate Pursuit); Spoof prevents both for 1 Memory. Pending decisions persist through reload. Canonical retains published Trace 6, Barriers/Tunnel, separate ICE, legacy node/Sentry rules and three specialist charges. Saved v0.1.4 Streamlined runs retain their original rule interpretation.
-
-Use **Settings → Default Facility Alert** to preselect Alert for new Streamlined networks; override it per intrusion. Log groups and exports distinguish Alert, assumption set, difficulty, tier, objective, modifiers and visibility. Reproduce T1 simulation results with `npm run balance -- 150` and save its JSON output.
-
-The committed [seeded balance batch](validation/balance-v015.json) covers 108 configurations (Easy/Standard/Hard × Alert 0–3 × three Basic Program policies × three resource policies), 150 runs each. At Alert 0, a T1 Hacker using the script's mixed-program/selective-node policy completes Easy 150/150 (100%), Standard 138/150 (92%) and Hard 127/150 (84.67%). These exceed the stated first-pass Standard and Hard design targets; they describe this particular automated spending and ICE-choice policy, not a recommended rules adjustment. No approved mechanic was changed to fit the targets.
+Version **0.2.0** implements the published NOVUM Network Intrusion first-playtest rules, canon revision `2026-10-29-r1`. The standalone PWA is a tabletop play aid, not a facility simulation or Foundry module. The [System Reference](https://github.com/jlabruna/novum-canon/blob/main/docs/system/SYSTEM_REFERENCE.md) governs the rules.
 
 ## Play
 
-Set a Hacker's INT modifier, Program rank and specialist Program tiers. Choose difficulty, network tier and an optional reproducible seed. Review the complete generated network, then begin. New Streamlined sessions always show the whole network. Historical Fog preferences remain available only for legacy playtests. Each run records its visibility mode and app version. Two NET Actions consume one physical Main Action. Results and chronological action logs are stored in IndexedDB on this device. The Playtest Log filters actual sessions and offers Summary/Detailed copy, share/text export and JSON export. Settings includes full backup/import and history clearing.
+Open [Network Intrusion](https://jlabruna.github.io/novum-hacking-playtest/). In **Hacker Setup**, enter INT and Program and choose the **highest Network Intrusion Feat actually acquired**. Higher positions include prerequisites; reaching a character level alone does not grant a Feat. The example ability preset changes INT and Program only. New runs snapshot setup, so later changes do not rewrite them.
 
-Historically, version 0.1.4 added a **Ruleset** selector on Generate Network. **Canonical** retains Barriers, Tunnel, separate ICE actions, and Breach 10. **Streamlined (Experimental — Not Canon)** generates no Barriers, omits Tunnel, and resolves ICE within a successful Cautious or Aggressive movement action. Choose a Breach target of 8 or 10 (default 10). A defeated ICE stops movement at its position; a later successful Basic Program check retries it. Compatible ICE Bypass clears it without an additional NET Action. In historical v0.1.4 Streamlined runs, Resource Nodes, Sentries, Trace, Pursuit and the three shared charges continue to work under those saved rules. The complete seeded network remains visible before Begin Intrusion. These changes do not alter published NOVUM rules.
+Generate a network by choosing Easy/Standard/Hard difficulty, independent T1–T4 tier, GM-controlled Facility Alert 0–3 and optional reproducible seed. Review the visible encounter track, then begin. The objective is Breach 10. Alert sets starting Trace; detection occurs at Trace 8. One physical Main Action gives two NET Actions. Cautious is check +2, +2 Breach on success and +2 Trace on either result. Aggressive is check +0, +3 Breach on success, +2 Trace on success and +3 on failure. Diagnostic roll modifiers can be changed in Setup; nondefault values are recorded in reports and are not a canon change.
 
-Hacker Setup keeps separate TEST-ONLY Cautious/Aggressive modifiers for each mode: Canonical defaults +0/+0, Streamlined defaults +2/+0. Both are adjustable and snapshotted per run, so changing setup later does not change an active or historical intrusion. Older runs are read as Canonical, Breach 10, with their original modifiers. The Log's Summary and Detailed reports identify exact ruleset, target, modifiers, difficulty, tier and visibility groups; they also show ICE interactions, actual movement, NET actions and Main-action rounds. Compare like configurations rather than treating a mixed total as a single ruleset's completion rate.
+ICE resolves during movement. Resource Node extraction costs an additional NET Action; skipped and failed nodes remain unavailable unless Backdoor restarts the same intrusion. Sentries are one-use and cost one Breach plus one Trace or immediate Pursuit; Spoof prevents both. The GM determines node rewards and real-world consequences. The app never automatically raises Facility Alert because of minigame outcomes.
 
-Tier 1–4 Hacker presets configure focused INT/Program values and all five specialist tiers; manual changes and existing v0.1.1 profiles remain available and persist locally. Hacker tier and network tier are independent.
+| Highest acquired Feat | Memory | Intrusion Programs | Tabletop ability |
+| --- | ---: | --- | --- |
+| None | 0 | None | Basic intrusion remains available to a Hacker trained in Program. |
+| Intrusion Protocol (minimum 1) | 2 | Trace Removal, Fortify, Spoof, Override | — |
+| Wireless Exploit (minimum 2) | 2 | Same | Close-range Open, Lock, Blind. |
+| Expanded Capacity (minimum 4) | 3 | Same | Wireless Exploit reaches Medium. |
+| Security Subversion (minimum 6) | 3 | Adds ICE Bypass | Wireless Exploit gains Disable. |
+| Logic Bomb (minimum 8) | 3 | Same | One physically planted security contingency; Free Action trigger resets Alert to 0. |
+| Backdoor (minimum 10) | 3 | Same | One chosen restart when Pursuit would eject the Hacker. |
 
-Version 0.1.3 added quiet, optional synthesized feedback, a full-width Trace track and prominent terminal results. Settings stores sound on/off and volume (25% initially). Hacker Setup offers independent −6…+6 **TEST-ONLY** Cautious and Aggressive check modifiers. Tunnel, extraction and specialist effects retain their Canonical behavior. Each run captures its modifiers when it starts. Summary and Detailed reports include an export timestamp and per-run configurations; detailed events include the complete check breakdown. The Log has a confirmed **Clear Completed Runs** action that leaves the active intrusion and configuration intact.
+Specialist Programs are unlocked by Feats and cost one Memory each. There are no specialist software tiers, purchases or preparation slots. ICE Bypass works at any network tier once acquired. Wireless Exploit is a one-roll, one-device tabletop ability, not a Network Intrusion action; a live feed grants visibility but does not extend the Hacker's own range. Logic Bomb is also adjudicated at the tabletop. The PWA displays these abilities but does not simulate them.
 
-The included Hacker is an **example configuration**, not an official character. A network's tier sets DV 14/16/18/20, while Easy/Standard/Hard sets component counts independently. Special Programs require a tier at least equal to the network tier and spend the shared three charges. No software-tier check bonus is added.
+Backdoor pauses at qualifying Pursuit ejection for a player choice. Using it immediately restarts the same terminal and layout, restores feat-derived Memory, resets Breach to 0 and Trace to the GM's current Alert, and deactivates Pursuit. Collected nodes and rewards stay collected and cannot pay twice; failed/skipped nodes reopen. It can be used once per original intrusion. Declining or later ejection locks that terminal for the rest of the mission by default. Voluntary disconnection also locks that terminal. A different terminal is a separate encounter.
 
-## iPhone
+## History, backup and offline use
 
-Open the published GitHub Pages URL in **Safari**, tap **Share → Add to Home Screen**, enable **Open as Web App** if offered, and tap **Add**. Open it once while connected so the app shell caches; then it can run offline. Finish a sample intrusion, open **Playtest Log → Copy Playtest Data**, and paste the report into a NOVUM Planning chat. ChatGPT is not required to play. Keep regular **Settings → Export Backup** files; removing site data or the installed app may erase local sessions.
+The old Canonical and experimental Streamlined modes are unavailable for new play. Existing runs, their original rulesets, versions, assumptions, actions and outcomes remain in local IndexedDB and in backup/export files. Existing active old-format runs retain their original engine path and can be finished or archived under those rules. Logs identify historical conditions instead of recalculating them as current canon. Backup import remains replace-only with an explicit confirmation.
 
-## Development and publishing
+Open once while connected to cache the complete app shell; close and reopen after an update. Install on iPhone through Safari's **Share → Add to Home Screen**. Settings retains sound on/off and volume 0–100%, using the approved v0.1.6 tactical sounds. Export backups regularly because browser data can be erased. No account, telemetry or cloud sync is used.
 
-Requires Node 18 or later, with no external runtime or build dependencies.
+## Development
 
-```sh
-npm run verify
-npm run balance -- 150
-```
-
-The static site is produced in `dist/`. `.github/workflows/pages.yml` tests and publishes that directory when `main` changes. Set repository **Settings → Pages → Build and deployment → GitHub Actions** once. The site uses relative versioned assets so it runs beneath a repository URL prefix. The service worker precaches the complete shell, fetches navigations fresh when online and falls back offline; each release should update the app version, asset query and cache identifier. Close and reopen after an update. IndexedDB survives a routine update.
-
-Version 0.1.2 added a compact mobile action surface, matching Breach/Pursuit tracks, tabbed events/map, and iPhone safe-area spacing. Updates preserve IndexedDB history; old sessions are labelled legacy full/unspecified rather than retroactively fog-enabled. Existing runs without modifier metadata are read as canonical +0/+0. Audio starts only after a user gesture; iPhone output, including silent-switch behavior, needs device testing.
-
-No backend, account, telemetry, cloud sync or licensed Foundry runtime is involved. The icon is a generic concentric motif, not a reproduction of the NOVUM logo. The palette follows the private Visual Identity Guide; local font fallbacks avoid a network dependency.
+Requires Node 18 or later. `npm run verify` runs syntax, deterministic tests, production build and offline asset checks. `npm run balance:canon -- 500` reproduces the fixed-policy profile comparison in `validation/balance-v020.json`; its results are observations, not rule changes. `.github/workflows/pages.yml` publishes `dist/` to GitHub Pages when `main` changes. The app uses versioned relative imports and a release-specific service worker cache. [ASSUMPTIONS.md](ASSUMPTIONS.md) records implementation details and historical compatibility; [AUDIO.md](AUDIO.md) documents the preserved sound set.

@@ -20,7 +20,7 @@ test('four Hacker presets set approved INT, Program, bonus and all specialist de
 
 test('legacy manual profile and individual overrides survive migration without tier coercion',()=>{
   const old={name:'Old',int:2,program:5,programs:{trace:0,fortify:2,bypass:4,override:1,spoof:3}};
-  assert.deepEqual(migrateHacker(old),{...old,tier:null,custom:true,modifiers:{cautious:0,aggressive:0},streamlinedModifiers:{cautious:2,aggressive:0}});
+  assert.deepEqual(migrateHacker(old),{...old,feat:0,tier:null,custom:true,modifiers:{cautious:0,aggressive:0},streamlinedModifiers:{cautious:2,aggressive:0}});
   const custom={...preset(3),custom:true,programs:{...preset(3).programs,spoof:0}};
   assert.deepEqual(migrateHacker(custom),custom);
   assert.equal(migrateSettings({largeText:true}).fog,false);
@@ -68,15 +68,15 @@ test('new runs log version and fog mode; old runs remain unspecified in exports'
   const old=structuredClone(r);delete old.visibility;old.appVersion='0.1.1';
   assert.equal(visibility(old),'legacy-full');
   const text=report([r,old]);assert.match(text,/fog 1, full 0, legacy full\/unspecified 1/);
-  assert.match(text,/app=0.1.6 assumptions=test-1 ruleset=canonical target=10 Alert=legacy 0 startingTrace=0 traceLimit=6 visibility=fog/);assert.match(text,/app=0.1.1 assumptions=test-1 ruleset=canonical target=10 Alert=legacy 0 startingTrace=0 traceLimit=6 visibility=legacy-full/);
+  assert.match(text,/app=0.2.0 canon=2026-10-27-r4 assumptions=test-1 ruleset=canonical target=10 Alert=legacy 0 startingTrace=0 traceLimit=6 visibility=fog/);assert.match(text,/app=0.1.1 canon=2026-10-27-r4 assumptions=test-1 ruleset=canonical target=10 Alert=legacy 0 startingTrace=0 traceLimit=6 visibility=legacy-full/);
 });
 
 test('mobile status bar, bottom navigation, contextual layout and settings hooks are present',()=>{
   const css=readFileSync('style.css','utf8'),html=readFileSync('index.html','utf8'),app=readFileSync('src/app.js','utf8');
   assert.match(html,/viewport-fit=cover/);assert.match(css,/body\{padding-top:env\(safe-area-inset-top\)/);
   assert.match(css,/nav\{position:fixed/);assert.match(css,/safe-area-inset-bottom/);
-  assert.match(app,/id="fog"/);assert.match(app,/run.visibility=modernStreamlined\(run\)\?'full':settings.fog\?'fog':'full'/);
+  assert.doesNotMatch(app,/id="fog"/);assert.match(app,/run.visibility=modernStreamlined\(run\)\?'full':settings.fog\?'fog':'full'/);
   assert.match(app,/infoTab=a.slice\(4\)/);
-  assert.match(html,/src\/app\.js\?v=0\.1\.6/);assert.match(html,/style\.css\?v=0\.1\.6/);
+  assert.match(html,/src\/app\.js\?v=0\.2\.0/);assert.match(html,/style\.css\?v=0\.2\.0/);
   assert.match(readFileSync('public/sw.js','utf8'),/e\.request\.mode==='navigate'/);
 });

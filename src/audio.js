@@ -2,6 +2,8 @@ export const DEFAULT_AUDIO=Object.freeze({sound:true,volume:25});
 
 // One outcome per interaction. A saved or inspected run is never a new outcome.
 export function selectCue(action,before,after){
+  if(action==='acceptEjection'&&after?.status==='ejected')return 'ejected';
+  if(action==='useBackdoor'&&after?.status==='active')return 'memory';
   if(before?.status==='active'&&after?.status==='success')return 'success';
   if(before?.status==='active'&&after?.status==='ejected')return 'ejected';
   if(before?.pursuit==null&&after?.pursuit!=null)return 'detection';

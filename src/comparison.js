@@ -1,6 +1,6 @@
-import {ruleset,breachTarget} from './engine.js?v=0.1.6';
-import {visibility} from './profile.js?v=0.1.6';
-import {modifierKey} from './modifiers.js?v=0.1.6';
+import {ruleset,breachTarget,memoryCapacity} from './engine.js?v=0.2.0';
+import {visibility} from './profile.js?v=0.2.0';
+import {modifierKey} from './modifiers.js?v=0.2.0';
 
 const avg=values=>values.length?(values.reduce((n,x)=>n+x,0)/values.length).toFixed(2):'—';
 const rate=runs=>runs.length?`${runs.filter(x=>x.status==='success').length}/${runs.length} (${(100*runs.filter(x=>x.status==='success').length/runs.length).toFixed(1)}%)`:'0/0 (—)';
@@ -26,7 +26,7 @@ export function runMetrics(run){
     detected:run.pursuit!==null,startingAlert:run.alert??0,startingTrace:run.startingTrace??0,
     cautiousActions:basic.filter(e=>e.kind==='cautious').length,cautiousActual:basic.filter(e=>e.kind==='cautious').reduce((n,e)=>n+(e.actual||0),0),
     aggressiveActions:basic.filter(e=>e.kind==='aggressive').length,aggressiveActual:basic.filter(e=>e.kind==='aggressive').reduce((n,e)=>n+(e.actual||0),0),
-    netActions:run.net,mainActions:run.main,chargesUsed:3-run.charges,
+    netActions:run.net,mainActions:run.main,chargesUsed:memoryCapacity(run)-run.charges,
     nodeAttempts:events.filter(e=>e.kind==='extract').length,nodeExtracted:run.network.elements.filter(e=>e.type==='node'&&e.status==='extracted').length,
     nodeSkipped:run.network.elements.filter(e=>e.type==='node'&&e.status==='skipped').length,
     earlyEjection:run.status==='ejected'&&run.breach<breachTarget(run)/2

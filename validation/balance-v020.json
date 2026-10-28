@@ -1,0 +1,105 @@
+{
+  "version": "0.2.0",
+  "canon": "2026-10-29-r1",
+  "conditions": {
+    "difficulty": "Standard",
+    "tier": 1,
+    "alert": 0,
+    "int": 3,
+    "program": 3,
+    "seedPrefix": "canon-v020-",
+    "policy": "Cautious until Trace 5, then Aggressive; attempt each node, Override and Spoof when available, Bypass when available, Trace Removal at 4+, Fortify when viable, use Backdoor on ejection; deterministic player rolls and ICE."
+  },
+  "results": [
+    {
+      "feat": 0,
+      "runs": 500,
+      "completion": 266,
+      "completionRate": 53.2,
+      "detected": 500,
+      "ejected": 234,
+      "meanNet": 7.34,
+      "meanNetSuccess": 8.2,
+      "programUse": {
+        "trace": 0,
+        "fortify": 0,
+        "bypass": 0,
+        "override": 0,
+        "spoof": 0,
+        "backdoor": 0
+      }
+    },
+    {
+      "feat": 1,
+      "runs": 500,
+      "completion": 366,
+      "completionRate": 73.2,
+      "detected": 500,
+      "ejected": 134,
+      "meanNet": 8.44,
+      "meanNetSuccess": 8.55,
+      "programUse": {
+        "trace": 457,
+        "fortify": 0,
+        "bypass": 0,
+        "override": 363,
+        "spoof": 0,
+        "backdoor": 0
+      }
+    },
+    {
+      "feat": 4,
+      "runs": 500,
+      "completion": 401,
+      "completionRate": 80.2,
+      "detected": 500,
+      "ejected": 99,
+      "meanNet": 8.94,
+      "meanNetSuccess": 8.89,
+      "programUse": {
+        "trace": 799,
+        "fortify": 0,
+        "bypass": 0,
+        "override": 478,
+        "spoof": 0,
+        "backdoor": 0
+      }
+    },
+    {
+      "feat": 6,
+      "runs": 500,
+      "completion": 424,
+      "completionRate": 84.8,
+      "detected": 500,
+      "ejected": 76,
+      "meanNet": 8.69,
+      "meanNetSuccess": 8.56,
+      "programUse": {
+        "trace": 596,
+        "fortify": 0,
+        "bypass": 222,
+        "override": 464,
+        "spoof": 0,
+        "backdoor": 0
+      }
+    },
+    {
+      "feat": 10,
+      "runs": 500,
+      "completion": 494,
+      "completionRate": 98.8,
+      "detected": 500,
+      "ejected": 6,
+      "meanNet": 9.91,
+      "meanNetSuccess": 9.81,
+      "programUse": {
+        "trace": 734,
+        "fortify": 0,
+        "bypass": 259,
+        "override": 474,
+        "spoof": 0,
+        "backdoor": 76
+      }
+    }
+  ]
+}
